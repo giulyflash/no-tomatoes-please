@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+    <!-- console log appender should not be used when running text mode user interface -->
+    <appender name="console" class="org.apache.log4j.ConsoleAppender"> 
+        <param name="Target" value="System.out"/> 
+        <layout class="org.apache.log4j.PatternLayout"> 
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%t] %F:%L - %m%n"/>
+        </layout> 
+    </appender> 
+
+    <!-- file appender can be used for text mode user interface and graphical user interface -->
+    <appender name="logfile" class="org.apache.log4j.FileAppender">
+        <param name="File" value="no-tomatoes-please.log" />
+        <param name="Append" value="true" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%t] %F:%L - %m%n"/>
+        </layout>           
+    </appender>
+
+    <root> 
+        <priority value ="debug"/> 
+        <appender-ref ref="logfile"/> 
+    </root>
+
+</log4j:configuration>
