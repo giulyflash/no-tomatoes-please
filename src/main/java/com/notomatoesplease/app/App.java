@@ -17,11 +17,6 @@ public class App {
     public static void main(final String[] args) {
         System.out.println("No tomatoes, please!");
 
-        final Ingredient doughWheat = new Ingredient();
-        doughWheat.setName("Weizenteig");
-        doughWheat.setPrice(450);
-        doughWheat.setVisible(true);
-
         LOG.debug("Pizza zu JSON konvertiert: {}", GsonUtil.toJson(setUpExamplePizza()));
     }
 
