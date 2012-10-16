@@ -1,6 +1,9 @@
 package com.notomatoesplease.domain;
 
-public class Ingredient {
+import com.notomatoesplease.domain.enumeration.IngredientType;
+
+public abstract class Ingredient {
+
     private String name;
     private int price;
     private boolean visible;
@@ -41,5 +44,7 @@ public class Ingredient {
         builder.append("]");
         return builder.toString();
     }
+
+    public abstract IngredientType getType();
 
 }

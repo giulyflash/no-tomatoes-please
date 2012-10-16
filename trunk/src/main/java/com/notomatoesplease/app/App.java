@@ -1,127 +1,91 @@
 package com.notomatoesplease.app;
 
-import java.util.List;
-
-import jcurses.event.ActionEvent;
-import jcurses.event.ActionListener;
-import jcurses.event.ItemEvent;
-import jcurses.event.ItemListener;
-import jcurses.event.ValueChangedEvent;
-import jcurses.event.ValueChangedListener;
-import jcurses.event.WindowEvent;
-import jcurses.event.WindowListener;
-import jcurses.system.CharColor;
-import jcurses.util.Message;
-import jcurses.widgets.Button;
-import jcurses.widgets.DefaultLayoutManager;
-import jcurses.widgets.Label;
-import jcurses.widgets.TextField;
-import jcurses.widgets.Widget;
-import jcurses.widgets.WidgetsConstants;
-import jcurses.widgets.Window;
-
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.GnuParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.Parser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Lists;
-import com.notomatoesplease.domain.Ingredient;
-import com.notomatoesplease.domain.Pizza;
-import com.notomatoesplease.util.GsonUtil;
+import com.notomatoesplease.persistence.Persistence;
+import com.notomatoesplease.persistence.impl.H2PersistenceImpl;
+import com.notomatoesplease.persistence.impl.JsonFilePersistenceImpl;
+import com.notomatoesplease.userinterface.UserInterface;
+import com.notomatoesplease.userinterface.gui.GraphicalUserInterface;
+import com.notomatoesplease.userinterface.tui.TextUserInterface;
 
-public class App extends Window implements ItemListener, ActionListener, ValueChangedListener, WindowListener,
-                WidgetsConstants {
+public class App {
 
-    private static final Logger LOG = LoggerFactory.getLogger(App.class);
+    private final static Logger LOG = LoggerFactory.getLogger(App.class);
 
-    private static App window = null;
-    private static TextField textfield = null;
-    private static Button button = null;
+    private static final String JSON_PERSISTENCE = "JSON";
+    private static final String DB_PERSISTENCE = "DB";
+    private static final String TEXT_MODE = "TEXT";
+    private static final String GRAPHICAL_MODE = "GRAPHICAL";
 
-    public App(final int width, final int height) {
-        super(width, height, true, "JCurses Test");
-    }
+    private static Persistence persistenceLayer;
+    private static UserInterface userInterface;
 
     public static void main(final String[] args) {
-        LOG.info("Pizza zu JSON konvertiert: {}", GsonUtil.toJson(setUpExamplePizza()));
-        window = new App(30, 20);
-        window.init();
-    }
+        final Options options = new Options();
+        options.addOption(createOptionUserInterface());
+        options.addOption(createOptionPersistence());
+        final HelpFormatter formatter = new HelpFormatter();
 
-    public void init() {
-        final DefaultLayoutManager mgr = new DefaultLayoutManager();
-        mgr.bindToContainer(window.getRootPanel());
-        mgr.addWidget(new Label("Hello World!", new CharColor(CharColor.WHITE, CharColor.GREEN)), 0, 0, 20, 10,
-                        WidgetsConstants.ALIGNMENT_CENTER, WidgetsConstants.ALIGNMENT_CENTER);
+        try {
+            final Parser parser = new GnuParser();
+            final CommandLine line = parser.parse(options, args);
 
-        textfield = new TextField(10);
-        mgr.addWidget(textfield, 0, 0, 20, 20, WidgetsConstants.ALIGNMENT_CENTER, WidgetsConstants.ALIGNMENT_CENTER);
+            if (GRAPHICAL_MODE.equals(line.getOptionValue('i'))) {
+                System.out.println("Es gibt ein grafisches Feuerwerk!");
+                userInterface = new GraphicalUserInterface();
+            } else if (TEXT_MODE.equals(line.getOptionValue('i'))) {
+                System.out.println("Old skool text mode!");
+                userInterface = new TextUserInterface();
+            } else {
+                System.err.println("Possible values for the interface mode are: GRAPHICAL or TEXT");
+            }
 
-        button = new Button("Quit");
-        mgr.addWidget(button, 0, 0, 20, 30, WidgetsConstants.ALIGNMENT_CENTER, WidgetsConstants.ALIGNMENT_CENTER);
+            if (DB_PERSISTENCE.equals(line.getOptionValue('p'))) {
+                System.out.println("Mit einer fetten Datenbank dahinter!");
+                persistenceLayer = new H2PersistenceImpl();
+            } else if (JSON_PERSISTENCE.equals(line.getOptionValue('p'))) {
+                System.out.println("Mit superschnellem JSON unter der Haube!");
+                persistenceLayer = new JsonFilePersistenceImpl();
+            } else {
+                System.err.println("Possible values for the persistence mode are: DB or JSON");
+            }
 
-        button.setShortCut('q');
-        button.addListener(this);
-        window.addListener(this);
-        window.show();
-    }
-
-    public void actionPerformed(final ActionEvent event) {
-        final Widget w = event.getSource();
-        if (w == button) {
-            new Message("HowTo", "You are about to quit", "OK").show();
-            window.close();
+        } catch (final ParseException ex) {
+            System.err.println(ex.getMessage());
+            formatter.printHelp("notomatoesplease", options);
+        } catch (final Exception ex) {
+            LOG.error("unknown error while parsing command line", ex);
         }
     }
 
-    public void stateChanged(final ItemEvent e) {
+    private static Option createOptionUserInterface() {
+        OptionBuilder.withArgName("mode");
+        OptionBuilder.hasArg();
+        OptionBuilder.withLongOpt("interface");
+        OptionBuilder.isRequired();
+        OptionBuilder.withDescription("mode of the user interface. Possible values are: GRAPHICAL or TEXT");
+        final Option userInterface = OptionBuilder.create("i");
+        return userInterface;
     }
 
-    public void valueChanged(final ValueChangedEvent e) {
-    }
-
-    public void windowChanged(final WindowEvent event) {
-        if (event.getType() == WindowEvent.CLOSING) {
-            event.getSourceWindow().close();
-            // Toolkit.clearScreen(new CharColor(CharColor.WHITE,
-            // CharColor.BLACK));
-        }
-    }
-
-    private static Pizza setUpExamplePizza() {
-        final Pizza pizza = new Pizza();
-
-        final Ingredient dough = new Ingredient();
-        dough.setName("Weizenteig");
-        dough.setPrice(450);
-        dough.setVisible(true);
-
-        final Ingredient sauce = new Ingredient();
-        sauce.setName("Tomatensoße");
-        sauce.setPrice(70);
-        sauce.setVisible(true);
-
-        final Ingredient cheese = new Ingredient();
-        cheese.setName("Käse");
-        cheese.setPrice(50);
-        cheese.setVisible(true);
-
-        final Ingredient ham = new Ingredient();
-        ham.setName("Schinken");
-        ham.setPrice(75);
-        ham.setVisible(true);
-
-        final Ingredient olives = new Ingredient();
-        olives.setName("Oliven");
-        olives.setPrice(90);
-        olives.setVisible(true);
-
-        final List<Ingredient> toppings = Lists.newArrayList(cheese, ham, olives);
-
-        pizza.setDough(dough);
-        pizza.setSauce(sauce);
-        pizza.setToppings(toppings);
-
-        return pizza;
+    private static Option createOptionPersistence() {
+        OptionBuilder.withArgName("mode");
+        OptionBuilder.hasArg();
+        OptionBuilder.withLongOpt("persistence");
+        OptionBuilder.isRequired();
+        OptionBuilder.withDescription("mode of the persistence. Possible values are: DB or JSON");
+        final Option persistence = OptionBuilder.create("p");
+        return persistence;
     }
 
 }
