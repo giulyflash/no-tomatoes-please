@@ -55,7 +55,7 @@ public class App {
                 System.err.println("Possible values for the interface mode are: GRAPHICAL or TEXT");
             }
 
-            if (GRAPHICAL_MODE.equals(line.getOptionValue('f'))) {
+            if (GRAPHICAL_MODE.equals(line.getOptionValue('l'))) {
                 System.out.println("Die Logik fließt!");
                 userInterface = new GraphicalUserInterface();
             } else {
@@ -98,7 +98,7 @@ public class App {
         OptionBuilder.withLongOpt("logic");
         OptionBuilder.isRequired();
         OptionBuilder.withDescription("mode of the user interface. Possible values are: FLUENT");
-        final Option userInterface = OptionBuilder.create("f");
+        final Option userInterface = OptionBuilder.create("l");
         return userInterface;
     }
 
