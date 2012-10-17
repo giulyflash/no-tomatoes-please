@@ -11,6 +11,7 @@ import org.apache.commons.cli.Parser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.notomatoesplease.logic.Logic;
 import com.notomatoesplease.persistence.Persistence;
 import com.notomatoesplease.persistence.impl.H2PersistenceImpl;
 import com.notomatoesplease.persistence.impl.JsonFilePersistenceImpl;
@@ -26,13 +27,17 @@ public class App {
     private static final String DB_PERSISTENCE = "DB";
     private static final String TEXT_MODE = "TEXT";
     private static final String GRAPHICAL_MODE = "GRAPHICAL";
+    private static final String FLUENT_LOGIC = "FLUENT";
 
     private static Persistence persistenceLayer;
     private static UserInterface userInterface;
+    private static Logic logicLayer;
+
 
     public static void main(final String[] args) {
         final Options options = new Options();
         options.addOption(createOptionUserInterface());
+        options.addOption(createOptionLogic());
         options.addOption(createOptionPersistence());
         final HelpFormatter formatter = new HelpFormatter();
 
@@ -48,6 +53,13 @@ public class App {
                 userInterface = new TextUserInterface();
             } else {
                 System.err.println("Possible values for the interface mode are: GRAPHICAL or TEXT");
+            }
+
+            if (GRAPHICAL_MODE.equals(line.getOptionValue('f'))) {
+                System.out.println("Die Logik fließt!");
+                userInterface = new GraphicalUserInterface();
+            } else {
+                System.err.println("Possible values for the logic mode are: FLUENT");
             }
 
             if (DB_PERSISTENCE.equals(line.getOptionValue('p'))) {
@@ -68,6 +80,7 @@ public class App {
         }
     }
 
+
     private static Option createOptionUserInterface() {
         OptionBuilder.withArgName("mode");
         OptionBuilder.hasArg();
@@ -78,6 +91,18 @@ public class App {
         return userInterface;
     }
 
+
+    private static Option createOptionLogic() {
+        OptionBuilder.withArgName("mode");
+        OptionBuilder.hasArg();
+        OptionBuilder.withLongOpt("logic");
+        OptionBuilder.isRequired();
+        OptionBuilder.withDescription("mode of the user interface. Possible values are: FLUENT");
+        final Option userInterface = OptionBuilder.create("f");
+        return userInterface;
+    }
+
+
     private static Option createOptionPersistence() {
         OptionBuilder.withArgName("mode");
         OptionBuilder.hasArg();
@@ -87,5 +112,4 @@ public class App {
         final Option persistence = OptionBuilder.create("p");
         return persistence;
     }
-
 }
