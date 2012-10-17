@@ -55,7 +55,7 @@ public class App {
                 System.err.println("Possible values for the interface mode are: GRAPHICAL or TEXT");
             }
 
-            if (GRAPHICAL_MODE.equals(line.getOptionValue('l'))) {
+            if (FLUENT_LOGIC.equals(line.getOptionValue('l'))) {
                 System.out.println("Die Logik fließt!");
                 userInterface = new GraphicalUserInterface();
             } else {
