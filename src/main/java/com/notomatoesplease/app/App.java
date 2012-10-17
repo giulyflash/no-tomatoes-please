@@ -33,7 +33,6 @@ public class App {
     private static UserInterface userInterface;
     private static Logic logicLayer;
 
-
     public static void main(final String[] args) {
         final Options options = new Options();
         options.addOption(createOptionUserInterface());
@@ -53,13 +52,14 @@ public class App {
                 userInterface = new TextUserInterface();
             } else {
                 System.err.println("Possible values for the interface mode are: GRAPHICAL or TEXT");
+                System.exit(1);
             }
 
             if (FLUENT_LOGIC.equals(line.getOptionValue('l'))) {
                 System.out.println("Die Logik fließt!");
-                userInterface = new GraphicalUserInterface();
             } else {
                 System.err.println("Possible values for the logic mode are: FLUENT");
+                System.exit(1);
             }
 
             if (DB_PERSISTENCE.equals(line.getOptionValue('p'))) {
@@ -70,16 +70,18 @@ public class App {
                 persistenceLayer = new JsonFilePersistenceImpl();
             } else {
                 System.err.println("Possible values for the persistence mode are: DB or JSON");
+                System.exit(1);
             }
+
+            userInterface.show();
 
         } catch (final ParseException ex) {
             System.err.println(ex.getMessage());
             formatter.printHelp("notomatoesplease", options);
         } catch (final Exception ex) {
-            LOG.error("unknown error while parsing command line", ex);
+            LOG.error("unknown error occured", ex);
         }
     }
-
 
     private static Option createOptionUserInterface() {
         OptionBuilder.withArgName("mode");
@@ -91,7 +93,6 @@ public class App {
         return userInterface;
     }
 
-
     private static Option createOptionLogic() {
         OptionBuilder.withArgName("mode");
         OptionBuilder.hasArg();
@@ -101,7 +102,6 @@ public class App {
         final Option userInterface = OptionBuilder.create("l");
         return userInterface;
     }
-
 
     private static Option createOptionPersistence() {
         OptionBuilder.withArgName("mode");
