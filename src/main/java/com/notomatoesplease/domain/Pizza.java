@@ -3,41 +3,33 @@ package com.notomatoesplease.domain;
 import java.util.List;
 
 public class Pizza {
+
     private Size size;
     private Dough dough;
     private Sauce sauce;
     private List<Topping> toppings;
 
-    public Size getSize() {
-        return size;
+    public Pizza(final Size size, final Dough dough, final Sauce sauce, final List<Topping> toppings) {
+        this.size = size;
+        this.dough = dough;
+        this.sauce = sauce;
+        this.toppings = toppings;
     }
 
-    public void setSize(final Size size) {
-        this.size = size;
+    public Size getSize() {
+        return size;
     }
 
     public Dough getDough() {
         return dough;
     }
 
-    public void setDough(final Dough dough) {
-        this.dough = dough;
-    }
-
     public Sauce getSauce() {
         return sauce;
     }
 
-    public void setSauce(final Sauce sauce) {
-        this.sauce = sauce;
-    }
-
     public List<Topping> getToppings() {
         return toppings;
-    }
-
-    public void setToppings(final List<Topping> toppings) {
-        this.toppings = toppings;
     }
 
     @Override
