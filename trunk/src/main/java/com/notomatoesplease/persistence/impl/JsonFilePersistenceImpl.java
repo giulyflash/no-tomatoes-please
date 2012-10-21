@@ -23,13 +23,8 @@ public class JsonFilePersistenceImpl implements Persistence {
 
     private static final Logger LOG = LoggerFactory.getLogger(JsonFilePersistenceImpl.class);
 
-    private String readJsonFromFile(final String filename) {
-        try {
-            return Files.toString(new File(filename), Charsets.UTF_8);
-        } catch (final IOException e) {
-            LOG.error("error while reading file ", e);
-        }
-        return null;
+    public JsonFilePersistenceImpl() {
+        LOG.debug("using JSON files");
     }
 
     @Override
@@ -45,38 +40,73 @@ public class JsonFilePersistenceImpl implements Persistence {
 
     @Override
     public List<Dough> getDoughs() {
-        // TODO Auto-generated method stub
-        return null;
+        // TODO: remove hard coded string and move it to a properties file
+        final String json = readJsonFromFile("target/classes/json/doughs.json");
+
+        final Type listType = new TypeToken<ArrayList<Dough>>() {
+        }.getType();
+
+        return GsonUtil.toObject(json, listType);
     }
 
     @Override
     public List<Sauce> getSauces() {
-        // TODO Auto-generated method stub
-        return null;
+        // TODO: remove hard coded string and move it to a properties file
+        final String json = readJsonFromFile("target/classes/json/sauces.json");
+
+        final Type listType = new TypeToken<ArrayList<Sauce>>() {
+        }.getType();
+
+        return GsonUtil.toObject(json, listType);
     }
 
     @Override
     public List<Topping> getToppings() {
-        // TODO Auto-generated method stub
-        return null;
+        // TODO: remove hard coded string and move it to a properties file
+        final String json = readJsonFromFile("target/classes/json/toppings.json");
+
+        final Type listType = new TypeToken<ArrayList<Topping>>() {
+        }.getType();
+
+        return GsonUtil.toObject(json, listType);
     }
 
     @Override
     public void saveToppings(final List<Topping> toppings) {
-        // TODO Auto-generated method stub
-
+        // TODO: remove hard coded string and move it to a properties file
+        try {
+            Files.write(GsonUtil.toJson(toppings), new File("target/classes/json/toppings.json"), Charsets.UTF_8);
+        } catch (final IOException e) {
+            LOG.error("error while saving toppings", e);
+        }
     }
 
     @Override
     public void saveDoughs(final List<Dough> doughs) {
-        // TODO Auto-generated method stub
-
+        // TODO: remove hard coded string and move it to a properties file
+        try {
+            Files.write(GsonUtil.toJson(doughs), new File("target/classes/json/doughs.json"), Charsets.UTF_8);
+        } catch (final IOException e) {
+            LOG.error("error while saving doughs", e);
+        }
     }
 
     @Override
     public void saveSauces(final List<Sauce> sauces) {
-        // TODO Auto-generated method stub
-
+        // TODO: remove hard coded string and move it to a properties file
+        try {
+            Files.write(GsonUtil.toJson(sauces), new File("target/classes/json/sauces.json"), Charsets.UTF_8);
+        } catch (final IOException e) {
+            LOG.error("error while saving sauces", e);
+        }
     }
 
+    private String readJsonFromFile(final String filename) {
+        try {
+            return Files.toString(new File(filename), Charsets.UTF_8);
+        } catch (final IOException e) {
+            LOG.error("error while reading file ", e);
+        }
+        return null;
+    }
 }

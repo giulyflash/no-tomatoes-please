@@ -9,14 +9,26 @@ import jcurses.widgets.Label;
 import jcurses.widgets.WidgetsConstants;
 import jcurses.widgets.Window;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.notomatoesplease.logic.Logic;
+import com.notomatoesplease.userinterface.AbstractUserInterface;
 import com.notomatoesplease.userinterface.UserInterface;
 
-public class TextUserInterface implements UserInterface {
+public class TextUserInterface extends AbstractUserInterface implements UserInterface {
+
+    private static final Logger LOG = LoggerFactory.getLogger(TextUserInterface.class);
+
+    public TextUserInterface(final Logic logic) {
+        super(logic);
+        LOG.debug("using text mode user interface");
+    }
 
     @Override
-    public void show() {
+    public void run() {
         final Window w = new Window(100, 25, true, "Pizza im Text Mode!");
-        final Label label = new Label("Ich bin ein Text", new CharColor(CharColor.BLACK, CharColor.GREEN));
+        final Label label = new Label("Ich bin ein Text ß äöü ÄÖÜ", new CharColor(CharColor.BLACK, CharColor.GREEN));
         final Button button = new Button("Beenden");
         final ActionListener listener = new ActionListener() {
 
