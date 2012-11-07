@@ -1,20 +1,8 @@
 package com.notomatoesplease.domain;
 
-public class Size {
-    private int price;
-    private String name;
+public class Size extends PizzaProperty {
 
     public Size(final String name, final int price) {
-        this.name = name;
-        this.price = price;
+        super(name, price);
     }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public String getName() {
-        return name;
-    }
-
 }
