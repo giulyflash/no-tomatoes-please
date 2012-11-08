@@ -70,7 +70,7 @@ public class H2PersistenceImpl implements Persistence {
             List<Dough> resList = new ArrayList<Dough>();
 
             if (con != null) {
-                String sql = "SELECT * FROM dough;";
+                String sql = "SELECT * FROM sauce;";
                 prest = con.prepareStatement(sql);
                 rs = prest.executeQuery();
 
