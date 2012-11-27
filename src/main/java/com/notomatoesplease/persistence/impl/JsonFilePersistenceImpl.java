@@ -35,7 +35,7 @@ public class JsonFilePersistenceImpl implements Persistence {
         final Type listType = new TypeToken<ArrayList<Size>>() {
         }.getType();
 
-        return GsonUtil.toObject(json, listType);
+        return GsonUtil.fromJson(json, listType);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class JsonFilePersistenceImpl implements Persistence {
         final Type listType = new TypeToken<ArrayList<Dough>>() {
         }.getType();
 
-        return GsonUtil.toObject(json, listType);
+        return GsonUtil.fromJson(json, listType);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class JsonFilePersistenceImpl implements Persistence {
         final Type listType = new TypeToken<ArrayList<Sauce>>() {
         }.getType();
 
-        return GsonUtil.toObject(json, listType);
+        return GsonUtil.fromJson(json, listType);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class JsonFilePersistenceImpl implements Persistence {
         final Type listType = new TypeToken<ArrayList<Topping>>() {
         }.getType();
 
-        return GsonUtil.toObject(json, listType);
+        return GsonUtil.fromJson(json, listType);
     }
 
     @Override
