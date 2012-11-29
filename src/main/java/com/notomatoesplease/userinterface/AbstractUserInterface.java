@@ -12,7 +12,7 @@ public abstract class AbstractUserInterface implements UserInterface {
         this.logic = logic;
     }
 
-    public Logic getLogic() {
+    protected Logic getLogic() {
         return logic;
     }
 

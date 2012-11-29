@@ -11,7 +11,7 @@ public abstract class AbstractLogic implements Logic {
         this.persistence = persistence;
     }
 
-    public Persistence getPersistence() {
+    protected Persistence getPersistence() {
         return persistence;
     }
 
