@@ -18,6 +18,7 @@ import com.notomatoesplease.util.PizzaBakery;
 public class FluentLogicImpl extends AbstractLogic implements Logic {
 
     private static final Logger LOG = LoggerFactory.getLogger(FluentLogicImpl.class);
+    private final PizzaBakery bakery = new PizzaBakery();
 
     public FluentLogicImpl(final Persistence persistence) {
         super(persistence);
@@ -61,6 +62,6 @@ public class FluentLogicImpl extends AbstractLogic implements Logic {
 
     @Override
     public Pizza createPizza(final Size size, final Dough dough, final Sauce sauce, final List<Topping> toppings) {
-        return new PizzaBakery().takeDough(dough).rollOut(size).spread(sauce).sprinkle(toppings).bake();
+        return bakery.takeDough(dough).rollOut(size).spread(sauce).sprinkle(toppings).bake();
     }
 }

@@ -14,7 +14,7 @@ public class PizzaBakery {
     private Size size;
     private Dough dough;
     private Sauce sauce;
-    private List<Topping> toppings = Lists.newArrayList();
+    private final List<Topping> toppings = Lists.newArrayList();
 
     public PizzaBakery takeDough(final Dough dough) {
         this.dough = dough;
@@ -34,6 +34,19 @@ public class PizzaBakery {
     public PizzaBakery sprinkle(final List<Topping> toppings) {
         this.toppings.addAll(toppings);
         return this;
+    }
+
+    public int getCompletePrice() {
+        int price = 0;
+        price += size.getPrice();
+        price += dough.getPrice();
+        price += sauce.getPrice();
+
+        for (Topping top : toppings) {
+            price += top.getPrice();
+        }
+
+        return price;
     }
 
     public Pizza bake() {
