@@ -46,10 +46,10 @@ public class TextUserInterface extends AbstractUserInterface implements UserInte
             public void stateChanged(final ItemEvent event) {
                 switch (event.getId()) {
                 case 0:
-                    labelOrderPizza.setVisible(labelOrderPizza.getVisible());
+                    labelOrderPizza.setVisible(!labelOrderPizza.getVisible());
                     break;
                 case 1:
-                    labelIngredients.setVisible(labelIngredients.getVisible());
+                    labelIngredients.setVisible(!labelIngredients.getVisible());
                     break;
                 case 2:
                     mainWindow.close();
@@ -57,6 +57,7 @@ public class TextUserInterface extends AbstractUserInterface implements UserInte
                 }
             }
         };
+
         menu.addListener(menuListener);
 
         final Label label = new Label("Copyright 2012", new CharColor(CharColor.WHITE, CharColor.CYAN));
