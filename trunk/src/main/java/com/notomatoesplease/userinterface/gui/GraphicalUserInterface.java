@@ -1,5 +1,9 @@
 package com.notomatoesplease.userinterface.gui;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,11 +18,23 @@ public class GraphicalUserInterface extends AbstractUserInterface implements Use
     public GraphicalUserInterface(final Logic logic) {
         super(logic);
         LOG.debug("using graphical user interface");
+
+
     }
 
     @Override
     public void run() {
-        // TODO Auto-generated method stub
+        JFrame mainFrame = new JFrame("Pizza Bäcker");
+        mainFrame.setSize(800,500);
+        JPanel panelIngredients = new JPanel();
+        JPanel panelPizza = new JPanel();
+
+        JTabbedPane tabs = new JTabbedPane(JTabbedPane .TOP);
+        tabs.add("Zutaten bearbeiten", panelIngredients);
+        tabs.add("Pizza erstellen", panelPizza);
+
+        mainFrame.add(tabs);
+        mainFrame.setVisible(true);
     }
 
 }
