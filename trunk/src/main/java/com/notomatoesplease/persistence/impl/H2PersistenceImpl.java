@@ -30,9 +30,9 @@ public class H2PersistenceImpl implements Persistence {
         Connection con = getConnection();
         ResultSet rs = null;
         PreparedStatement prest = null;
+        List<Size> resList = new ArrayList<Size>();
 
         try {
-            List<Size> resList = new ArrayList<Size>();
 
             if (con != null) {
                 String sql = "SELECT * FROM size;";
@@ -49,15 +49,15 @@ public class H2PersistenceImpl implements Persistence {
                 LOG.debug("getSizes() reservations found: " + resList.size());
             }
 
-            return resList;
         }
         catch (SQLException se) {
             LOG.error("getSizes() failed ... " + se);
-            return null;
         }
         finally {
             closeConnections(con, rs, prest);
         }
+
+        return resList;
     }
 
     @Override
@@ -65,9 +65,9 @@ public class H2PersistenceImpl implements Persistence {
         Connection con = getConnection();
         ResultSet rs = null;
         PreparedStatement prest = null;
+        List<Dough> resList = new ArrayList<Dough>();
 
         try {
-            List<Dough> resList = new ArrayList<Dough>();
 
             if (con != null) {
                 String sql = "SELECT * FROM sauce;";
@@ -85,15 +85,16 @@ public class H2PersistenceImpl implements Persistence {
                 LOG.debug("getDoughs() reservations found: " + resList.size());
             }
 
-            return resList;
         }
         catch (SQLException se) {
             LOG.error("getDoughs() failed ... " + se);
-            return null;
         }
         finally {
             closeConnections(con, rs, prest);
         }
+
+
+        return resList;
     }
 
     @Override
@@ -101,9 +102,9 @@ public class H2PersistenceImpl implements Persistence {
         Connection con = getConnection();
         ResultSet rs = null;
         PreparedStatement prest = null;
+        List<Sauce> resList = new ArrayList<Sauce>();
 
         try {
-            List<Sauce> resList = new ArrayList<Sauce>();
 
             if (con != null) {
                 String sql = "SELECT * FROM dough;";
@@ -121,15 +122,15 @@ public class H2PersistenceImpl implements Persistence {
                 LOG.debug("getSauces() reservations found: " + resList.size());
             }
 
-            return resList;
         }
         catch (SQLException se) {
             LOG.error("getSauces() failed ... " + se);
-            return null;
         }
         finally {
             closeConnections(con, rs, prest);
         }
+
+        return resList;
     }
 
     @Override
@@ -137,9 +138,9 @@ public class H2PersistenceImpl implements Persistence {
         Connection con = getConnection();
         ResultSet rs = null;
         PreparedStatement prest = null;
+        List<Topping> resList = new ArrayList<Topping>();
 
         try {
-            List<Topping> resList = new ArrayList<Topping>();
 
             if (con != null) {
                 String sql = "SELECT * FROM topping;";
@@ -157,15 +158,15 @@ public class H2PersistenceImpl implements Persistence {
                 LOG.debug("getToppings() reservations found: " + resList.size());
             }
 
-            return resList;
         }
         catch (SQLException se) {
             LOG.error("getToppings() failed ... " + se);
-            return null;
         }
         finally {
             closeConnections(con, rs, prest);
         }
+
+        return resList;
     }
 
     @Override
@@ -277,7 +278,7 @@ public class H2PersistenceImpl implements Persistence {
         }
     }
 
-    private void closeConnections(Connection con, ResultSet rs, PreparedStatement prest) {
+    private void closeConnections(final Connection con, final ResultSet rs, final PreparedStatement prest) {
         try {
             if (rs != null) {
                 rs.close();
