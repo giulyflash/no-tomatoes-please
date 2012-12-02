@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Charsets;
+import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.google.gson.reflect.TypeToken;
 import com.notomatoesplease.domain.Dough;
@@ -32,6 +33,10 @@ public class JsonFilePersistenceImpl implements Persistence {
         // TODO: remove hard coded string and move it to a properties file
         final String json = readJsonFromFile("target/classes/json/sizes.json");
 
+        if (json == null) {
+            return Lists.newArrayList();
+        }
+
         final Type listType = new TypeToken<ArrayList<Size>>() {
         }.getType();
 
@@ -42,6 +47,10 @@ public class JsonFilePersistenceImpl implements Persistence {
     public List<Dough> getDoughs() {
         // TODO: remove hard coded string and move it to a properties file
         final String json = readJsonFromFile("target/classes/json/doughs.json");
+
+        if (json == null) {
+            return Lists.newArrayList();
+        }
 
         final Type listType = new TypeToken<ArrayList<Dough>>() {
         }.getType();
@@ -54,6 +63,10 @@ public class JsonFilePersistenceImpl implements Persistence {
         // TODO: remove hard coded string and move it to a properties file
         final String json = readJsonFromFile("target/classes/json/sauces.json");
 
+        if (json == null) {
+            return Lists.newArrayList();
+        }
+
         final Type listType = new TypeToken<ArrayList<Sauce>>() {
         }.getType();
 
@@ -64,6 +77,10 @@ public class JsonFilePersistenceImpl implements Persistence {
     public List<Topping> getToppings() {
         // TODO: remove hard coded string and move it to a properties file
         final String json = readJsonFromFile("target/classes/json/toppings.json");
+
+        if (json == null) {
+            return Lists.newArrayList();
+        }
 
         final Type listType = new TypeToken<ArrayList<Topping>>() {
         }.getType();
