@@ -1,1 +1,27 @@
-[{"visible":true,"price":420,"name":"Weizen"},{"visible":true,"price":510,"name":"Roggen"},{"visible":true,"price":640,"name":"Käserand"}]
+[
+    {
+        "name": "Weizen", 
+        "price": 450, 
+        "visible": true
+    }, 
+    {
+        "name": "Roggen", 
+        "price": 510, 
+        "visible": true
+    }, 
+    {
+        "name": "K\u00e4serand", 
+        "price": 640, 
+        "visible": true
+    },
+    {
+        "name": "Hefe", 
+        "price": 420, 
+        "visible": true
+    }, 
+    {
+        "name": "Bierteig", 
+        "price": 570    , 
+        "visible": true
+    } 
+]

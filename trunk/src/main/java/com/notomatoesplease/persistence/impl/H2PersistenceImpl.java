@@ -1,5 +1,9 @@
 package com.notomatoesplease.persistence.impl;
 
+import static com.notomatoesplease.util.PizzaUtil.DOUGH_UTIL;
+import static com.notomatoesplease.util.PizzaUtil.SAUCE_UTIL;
+import static com.notomatoesplease.util.PizzaUtil.TOPPING_UTIL;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -11,6 +15,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.Lists;
 import com.notomatoesplease.domain.Dough;
 import com.notomatoesplease.domain.Sauce;
 import com.notomatoesplease.domain.Size;
@@ -27,33 +32,31 @@ public class H2PersistenceImpl implements Persistence {
 
     @Override
     public List<Size> getSizes() {
-        Connection con = getConnection();
+        final Connection con = getConnection();
         ResultSet rs = null;
         PreparedStatement prest = null;
-        List<Size> resList = new ArrayList<Size>();
+        final List<Size> resList = new ArrayList<Size>();
 
         try {
 
             if (con != null) {
-                String sql = "SELECT * FROM size;";
+                final String sql = "SELECT * FROM size;";
                 prest = con.prepareStatement(sql);
                 rs = prest.executeQuery();
 
                 while (rs.next()) {
-                    String name = rs.getString(1);
-                    int price = rs.getInt(2);
-                    Size res = new Size(name, price);
+                    final String name = rs.getString(1);
+                    final int price = rs.getInt(2);
+                    final Size res = new Size(name, price);
                     resList.add(res);
                 }
 
                 LOG.debug("getSizes() reservations found: " + resList.size());
             }
 
-        }
-        catch (SQLException se) {
+        } catch (final SQLException se) {
             LOG.error("getSizes() failed ... " + se);
-        }
-        finally {
+        } finally {
             closeConnections(con, rs, prest);
         }
 
@@ -62,20 +65,20 @@ public class H2PersistenceImpl implements Persistence {
 
     @Override
     public List<Dough> getDoughs() {
-        Connection con = getConnection();
+        final Connection con = getConnection();
         ResultSet rs = null;
         PreparedStatement prest = null;
-        List<Dough> resList = new ArrayList<Dough>();
+        final List<Dough> resList = new ArrayList<Dough>();
 
         try {
 
             if (con != null) {
-                String sql = "SELECT * FROM sauce;";
+                final String sql = "SELECT * FROM dough ORDER BY \"name\";";
                 prest = con.prepareStatement(sql);
                 rs = prest.executeQuery();
 
                 while (rs.next()) {
-                    Dough dough = new Dough();
+                    final Dough dough = new Dough();
                     dough.setName(rs.getString(1));
                     dough.setPrice(rs.getInt(2));
                     dough.setVisible(rs.getBoolean(3));
@@ -85,34 +88,31 @@ public class H2PersistenceImpl implements Persistence {
                 LOG.debug("getDoughs() reservations found: " + resList.size());
             }
 
-        }
-        catch (SQLException se) {
+        } catch (final SQLException se) {
             LOG.error("getDoughs() failed ... " + se);
-        }
-        finally {
+        } finally {
             closeConnections(con, rs, prest);
         }
-
 
         return resList;
     }
 
     @Override
     public List<Sauce> getSauces() {
-        Connection con = getConnection();
+        final Connection con = getConnection();
         ResultSet rs = null;
         PreparedStatement prest = null;
-        List<Sauce> resList = new ArrayList<Sauce>();
+        final List<Sauce> resList = new ArrayList<Sauce>();
 
         try {
 
             if (con != null) {
-                String sql = "SELECT * FROM dough;";
+                final String sql = "SELECT * FROM sauce ORDER BY \"name\";";
                 prest = con.prepareStatement(sql);
                 rs = prest.executeQuery();
 
                 while (rs.next()) {
-                    Sauce sauce = new Sauce();
+                    final Sauce sauce = new Sauce();
                     sauce.setName(rs.getString(1));
                     sauce.setPrice(rs.getInt(2));
                     sauce.setVisible(rs.getBoolean(3));
@@ -122,11 +122,9 @@ public class H2PersistenceImpl implements Persistence {
                 LOG.debug("getSauces() reservations found: " + resList.size());
             }
 
-        }
-        catch (SQLException se) {
+        } catch (final SQLException se) {
             LOG.error("getSauces() failed ... " + se);
-        }
-        finally {
+        } finally {
             closeConnections(con, rs, prest);
         }
 
@@ -135,20 +133,20 @@ public class H2PersistenceImpl implements Persistence {
 
     @Override
     public List<Topping> getToppings() {
-        Connection con = getConnection();
+        final Connection con = getConnection();
         ResultSet rs = null;
         PreparedStatement prest = null;
-        List<Topping> resList = new ArrayList<Topping>();
+        final List<Topping> resList = new ArrayList<Topping>();
 
         try {
 
             if (con != null) {
-                String sql = "SELECT * FROM topping;";
+                final String sql = "SELECT * FROM topping ORDER BY \"name\";";
                 prest = con.prepareStatement(sql);
                 rs = prest.executeQuery();
 
                 while (rs.next()) {
-                    Topping topping = new Topping();
+                    final Topping topping = new Topping();
                     topping.setName(rs.getString(1));
                     topping.setPrice(rs.getInt(2));
                     topping.setVisible(rs.getBoolean(3));
@@ -158,11 +156,9 @@ public class H2PersistenceImpl implements Persistence {
                 LOG.debug("getToppings() reservations found: " + resList.size());
             }
 
-        }
-        catch (SQLException se) {
+        } catch (final SQLException se) {
             LOG.error("getToppings() failed ... " + se);
-        }
-        finally {
+        } finally {
             closeConnections(con, rs, prest);
         }
 
@@ -171,7 +167,7 @@ public class H2PersistenceImpl implements Persistence {
 
     @Override
     public void saveToppings(final List<Topping> toppings) {
-        Connection con = getConnection();
+        final Connection con = getConnection();
         PreparedStatement prest = null;
 
         try {
@@ -180,7 +176,8 @@ public class H2PersistenceImpl implements Persistence {
                 prest = con.prepareStatement(sql);
                 prest.executeUpdate();
 
-                for (Topping topping : toppings) {
+                final List<Topping> sortedToppings = Lists.newArrayList(TOPPING_UTIL.sortByName(toppings));
+                for (final Topping topping : sortedToppings) {
                     sql = "INSERT INTO topping (\"name\", \"price\", \"visible\") VALUES ( ?, ?, ?);";
                     prest = con.prepareStatement(sql);
 
@@ -191,18 +188,16 @@ public class H2PersistenceImpl implements Persistence {
                     prest.executeUpdate();
                 }
             }
-        }
-        catch (SQLException se) {
+        } catch (final SQLException se) {
             LOG.error("saveToppings() failed ... " + se);
-        }
-        finally {
+        } finally {
             closeConnections(con, null, prest);
         }
     }
 
     @Override
     public void saveDoughs(final List<Dough> doughs) {
-        Connection con = getConnection();
+        final Connection con = getConnection();
         PreparedStatement prest = null;
 
         try {
@@ -211,7 +206,8 @@ public class H2PersistenceImpl implements Persistence {
                 prest = con.prepareStatement(sql);
                 prest.executeUpdate();
 
-                for (Dough dough : doughs) {
+                final List<Dough> sortedDoughs = Lists.newArrayList(DOUGH_UTIL.sortByName(doughs));
+                for (final Dough dough : sortedDoughs) {
                     sql = "INSERT INTO dough (\"name\", \"price\", \"visible\") VALUES ( ?, ?, ?);";
                     prest = con.prepareStatement(sql);
 
@@ -222,18 +218,16 @@ public class H2PersistenceImpl implements Persistence {
                     prest.executeUpdate();
                 }
             }
-        }
-        catch (SQLException se) {
+        } catch (final SQLException se) {
             LOG.error("saveDoughs() failed ... " + se);
-        }
-        finally {
+        } finally {
             closeConnections(con, null, prest);
         }
     }
 
     @Override
     public void saveSauces(final List<Sauce> sauces) {
-        Connection con = getConnection();
+        final Connection con = getConnection();
         PreparedStatement prest = null;
 
         try {
@@ -242,7 +236,8 @@ public class H2PersistenceImpl implements Persistence {
                 prest = con.prepareStatement(sql);
                 prest.executeUpdate();
 
-                for (Sauce sauce : sauces) {
+                final List<Sauce> sortedSauces = Lists.newArrayList(SAUCE_UTIL.sortByName(sauces));
+                for (final Sauce sauce : sortedSauces) {
                     sql = "INSERT INTO sauce (\"name\", \"price\", \"visible\") VALUES ( ?, ?, ?);";
                     prest = con.prepareStatement(sql);
 
@@ -253,11 +248,9 @@ public class H2PersistenceImpl implements Persistence {
                     prest.executeUpdate();
                 }
             }
-        }
-        catch (SQLException se) {
+        } catch (final SQLException se) {
             LOG.error("saveSauces() failed ... " + se);
-        }
-        finally {
+        } finally {
             closeConnections(con, null, prest);
         }
     }
@@ -267,12 +260,10 @@ public class H2PersistenceImpl implements Persistence {
             Class.forName("org.h2.Driver");
 
             return DriverManager.getConnection("jdbc:h2:file:./data/pizza", "resu", "drowssap");
-        }
-        catch (SQLException sqle) {
+        } catch (final SQLException sqle) {
             LOG.error("getConnection() driver sql error" + sqle);
             return null;
-        }
-        catch (ClassNotFoundException cnfe) {
+        } catch (final ClassNotFoundException cnfe) {
             LOG.error("getConnection() driver not found error" + cnfe);
             return null;
         }
@@ -288,11 +279,10 @@ public class H2PersistenceImpl implements Persistence {
                 prest.close();
             }
 
-            if(con != null) {
+            if (con != null) {
                 con.close();
             }
-        }
-        catch(SQLException sqle) {
+        } catch (final SQLException sqle) {
             LOG.error("closeConnections() sql close exception " + sqle);
         }
     }
