@@ -1,5 +1,10 @@
 package com.notomatoesplease.persistence.impl;
 
+import static com.notomatoesplease.util.PizzaUtil.DOUGH_UTIL;
+import static com.notomatoesplease.util.PizzaUtil.SAUCE_UTIL;
+import static com.notomatoesplease.util.PizzaUtil.SIZE_UTIL;
+import static com.notomatoesplease.util.PizzaUtil.TOPPING_UTIL;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -40,7 +45,8 @@ public class JsonFilePersistenceImpl implements Persistence {
         final Type listType = new TypeToken<ArrayList<Size>>() {
         }.getType();
 
-        return GsonUtil.fromJson(json, listType);
+        final List<Size> sizes = GsonUtil.fromJson(json, listType);
+        return Lists.newArrayList(SIZE_UTIL.sortByName(sizes));
     }
 
     @Override
@@ -55,7 +61,8 @@ public class JsonFilePersistenceImpl implements Persistence {
         final Type listType = new TypeToken<ArrayList<Dough>>() {
         }.getType();
 
-        return GsonUtil.fromJson(json, listType);
+        final List<Dough> doughs = GsonUtil.fromJson(json, listType);
+        return Lists.newArrayList(DOUGH_UTIL.sortByName(doughs));
     }
 
     @Override
@@ -70,7 +77,8 @@ public class JsonFilePersistenceImpl implements Persistence {
         final Type listType = new TypeToken<ArrayList<Sauce>>() {
         }.getType();
 
-        return GsonUtil.fromJson(json, listType);
+        final List<Sauce> sauces = GsonUtil.fromJson(json, listType);
+        return Lists.newArrayList(SAUCE_UTIL.sortByName(sauces));
     }
 
     @Override
@@ -85,14 +93,16 @@ public class JsonFilePersistenceImpl implements Persistence {
         final Type listType = new TypeToken<ArrayList<Topping>>() {
         }.getType();
 
-        return GsonUtil.fromJson(json, listType);
+        final List<Topping> toppings = GsonUtil.fromJson(json, listType);
+        return Lists.newArrayList(TOPPING_UTIL.sortByName(toppings));
     }
 
     @Override
     public void saveToppings(final List<Topping> toppings) {
         // TODO: remove hard coded string and move it to a properties file
         try {
-            Files.write(GsonUtil.toJson(toppings), new File("target/classes/json/toppings.json"), Charsets.UTF_8);
+            Files.write(GsonUtil.toJson(Lists.newArrayList(TOPPING_UTIL.sortByName(toppings))), new File(
+                            "target/classes/json/toppings.json"), Charsets.UTF_8);
         } catch (final IOException e) {
             LOG.error("error while saving toppings", e);
         }
@@ -102,7 +112,8 @@ public class JsonFilePersistenceImpl implements Persistence {
     public void saveDoughs(final List<Dough> doughs) {
         // TODO: remove hard coded string and move it to a properties file
         try {
-            Files.write(GsonUtil.toJson(doughs), new File("target/classes/json/doughs.json"), Charsets.UTF_8);
+            Files.write(GsonUtil.toJson(Lists.newArrayList(DOUGH_UTIL.sortByName(doughs))), new File(
+                            "target/classes/json/doughs.json"), Charsets.UTF_8);
         } catch (final IOException e) {
             LOG.error("error while saving doughs", e);
         }
@@ -112,7 +123,8 @@ public class JsonFilePersistenceImpl implements Persistence {
     public void saveSauces(final List<Sauce> sauces) {
         // TODO: remove hard coded string and move it to a properties file
         try {
-            Files.write(GsonUtil.toJson(sauces), new File("target/classes/json/sauces.json"), Charsets.UTF_8);
+            Files.write(GsonUtil.toJson(Lists.newArrayList(SAUCE_UTIL.sortByName(sauces))), new File(
+                            "target/classes/json/sauces.json"), Charsets.UTF_8);
         } catch (final IOException e) {
             LOG.error("error while saving sauces", e);
         }

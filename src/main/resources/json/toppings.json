@@ -1,1 +1,127 @@
-[{"visible":true,"price":50,"name":"Käse"},{"visible":true,"price":75,"name":"Oliven"},{"visible":true,"price":60,"name":"Schinken"},{"visible":true,"price":50,"name":"Salami"},{"visible":true,"price":50,"name":"Artischocken"}]
+[
+    {
+        "name": "Emmentaler", 
+        "price": 50, 
+        "visible": true
+    }, 
+    {
+        "name": "Oliven schwarz", 
+        "price": 75, 
+        "visible": true
+    }, 
+    {
+        "name": "Schinken", 
+        "price": 60, 
+        "visible": true
+    }, 
+    {
+        "name": "Salami", 
+        "price": 50, 
+        "visible": true
+    }, 
+    {
+        "name": "Artischocken", 
+        "price": 70, 
+        "visible": true
+    },
+    {
+        "name": "Ananas",
+        "price": 80,
+        "visible": true
+    },
+    {
+        "name": "Bacon",
+        "price": 60,
+        "visible": true
+    },
+    {
+        "name": "Broccoli",
+        "price": 60,
+        "visible": true
+    },
+    {
+        "name": "Champignons",
+        "price": 45,
+        "visible": true
+    },
+    {
+        "name": "Ei",
+        "price": 55,
+        "visible": true
+    },
+    {
+        "name": "Gorgonzola",
+        "price": 95,
+        "visible": true
+    },
+    {
+        "name": "Gyros",
+        "price": 85,
+        "visible": true
+    },
+    {
+        "name": "Hähnchenfleisch",
+        "price": 110,
+        "visible": true
+    },
+    {
+        "name": "Hackfleisch",
+        "price": 75,
+        "visible": true
+    },
+    {
+        "name": "Mais",
+        "price": 40,
+        "visible": true
+    },
+    {
+        "name": "Mozzarella",
+        "price": 65,
+        "visible": true
+    },
+    {
+        "name": "Paprika",
+        "price": 80,
+        "visible": true
+    },
+    {
+        "name": "Parmesan",
+        "price": 90,
+        "visible": true
+    },
+    {
+        "name": "Rucola",
+        "price": 50,
+        "visible": true
+    },
+    {
+        "name": "Sardellen",
+        "price": 95,
+        "visible": true
+    },
+    {
+        "name": "Schafskäse",
+        "price": 70,
+        "visible": true
+    },
+    {
+        "name": "Spinat",
+        "price": 65,
+        "visible": true
+    },
+    {
+        "name": "Thunfisch",
+        "price": 80,
+        "visible": true
+    },
+    {
+        "name": "Tomaten",
+        "price": 50,
+        "visible": true
+    },
+    {
+        "name": "Zwiebeln",
+        "price": 45,
+        "visible": true
+    }
+]

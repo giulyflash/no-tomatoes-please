@@ -1,1 +1,27 @@
-[{"visible":true,"price":90,"name":"Tomatensauce"},{"visible":true,"price":110,"name":"Sauce Hollandaise"},{"visible":true,"price":130,"name":"Barbecuesauce"}]
+[
+    {
+        "name": "Tomatensauce", 
+        "price": 90, 
+        "visible": true
+    }, 
+    {
+        "name": "Sauce Hollandaise", 
+        "price": 110, 
+        "visible": true
+    }, 
+    {
+        "name": "Barbecue Sauce", 
+        "price": 130, 
+        "visible": true
+    }, 
+    {
+        "name": "Curry Sauce", 
+        "price": 120, 
+        "visible": true
+    }, 
+    {
+        "name": "Chili Sauce", 
+        "price": 120, 
+        "visible": true
+    } 
+]
