@@ -28,6 +28,8 @@ import com.notomatoesplease.util.GsonUtil;
 public class JsonFilePersistenceImpl implements Persistence {
 
     private static final Logger LOG = LoggerFactory.getLogger(JsonFilePersistenceImpl.class);
+//    private static final String dir = "target/classes/json/";
+    private static final String DIR = "classes/json/";
 
     public JsonFilePersistenceImpl() {
         LOG.debug("using JSON files");
@@ -36,7 +38,7 @@ public class JsonFilePersistenceImpl implements Persistence {
     @Override
     public List<Size> getSizes() {
         // TODO: remove hard coded string and move it to a properties file
-        final String json = readJsonFromFile("target/classes/json/sizes.json");
+        final String json = readJsonFromFile(DIR + "sizes.json");
 
         if (json == null) {
             return Lists.newArrayList();
@@ -52,7 +54,7 @@ public class JsonFilePersistenceImpl implements Persistence {
     @Override
     public List<Dough> getDoughs() {
         // TODO: remove hard coded string and move it to a properties file
-        final String json = readJsonFromFile("target/classes/json/doughs.json");
+        final String json = readJsonFromFile(DIR + "doughs.json");
 
         if (json == null) {
             return Lists.newArrayList();
@@ -68,7 +70,7 @@ public class JsonFilePersistenceImpl implements Persistence {
     @Override
     public List<Sauce> getSauces() {
         // TODO: remove hard coded string and move it to a properties file
-        final String json = readJsonFromFile("target/classes/json/sauces.json");
+        final String json = readJsonFromFile(DIR + "sauces.json");
 
         if (json == null) {
             return Lists.newArrayList();
@@ -84,7 +86,7 @@ public class JsonFilePersistenceImpl implements Persistence {
     @Override
     public List<Topping> getToppings() {
         // TODO: remove hard coded string and move it to a properties file
-        final String json = readJsonFromFile("target/classes/json/toppings.json");
+        final String json = readJsonFromFile(DIR + "toppings.json");
 
         if (json == null) {
             return Lists.newArrayList();
@@ -102,7 +104,7 @@ public class JsonFilePersistenceImpl implements Persistence {
         // TODO: remove hard coded string and move it to a properties file
         try {
             Files.write(GsonUtil.toJson(Lists.newArrayList(TOPPING_UTIL.sortByName(toppings))), new File(
-                            "target/classes/json/toppings.json"), Charsets.UTF_8);
+                            DIR + "toppings.json"), Charsets.UTF_8);
         } catch (final IOException e) {
             LOG.error("error while saving toppings", e);
         }
@@ -113,7 +115,7 @@ public class JsonFilePersistenceImpl implements Persistence {
         // TODO: remove hard coded string and move it to a properties file
         try {
             Files.write(GsonUtil.toJson(Lists.newArrayList(DOUGH_UTIL.sortByName(doughs))), new File(
-                            "target/classes/json/doughs.json"), Charsets.UTF_8);
+                            DIR + "doughs.json"), Charsets.UTF_8);
         } catch (final IOException e) {
             LOG.error("error while saving doughs", e);
         }
@@ -124,7 +126,7 @@ public class JsonFilePersistenceImpl implements Persistence {
         // TODO: remove hard coded string and move it to a properties file
         try {
             Files.write(GsonUtil.toJson(Lists.newArrayList(SAUCE_UTIL.sortByName(sauces))), new File(
-                            "target/classes/json/sauces.json"), Charsets.UTF_8);
+                            DIR + "sauces.json"), Charsets.UTF_8);
         } catch (final IOException e) {
             LOG.error("error while saving sauces", e);
         }
