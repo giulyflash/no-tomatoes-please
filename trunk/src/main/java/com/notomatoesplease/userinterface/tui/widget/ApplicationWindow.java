@@ -7,6 +7,8 @@ import java.util.List;
 
 import jcurses.event.ActionEvent;
 import jcurses.event.ActionListener;
+import jcurses.event.ItemEvent;
+import jcurses.event.ItemListener;
 import jcurses.event.WindowEvent;
 import jcurses.event.WindowListener;
 import jcurses.system.InputChar;
@@ -20,6 +22,7 @@ import jcurses.widgets.Window;
 
 import com.google.common.base.Joiner;
 import com.notomatoesplease.domain.Dough;
+import com.notomatoesplease.domain.Pizza;
 import com.notomatoesplease.domain.Sauce;
 import com.notomatoesplease.domain.Size;
 import com.notomatoesplease.domain.Topping;
@@ -62,6 +65,10 @@ public class ApplicationWindow extends Window {
     private static final String HELP_LABEL_1 = "Drücke 'F1', um diese Hilfe anzuzeigen.";
     private static final String HELP_LABEL_2 = "Drücke 'F2', um Zutaten zu bearbeiten oder neue hinzuzufügen.";
     private static final String HELP_LABEL_3 = "Drücke 'F3', um eine neue Pizza zu erstellen.";
+    private static final String MSG_BOX_ERROR_TEXT = "Es ist ein Fehler aufgetreten.";
+    private static final String MSG_BOX_SUCCESS_TEXT = "Aktion wurde erfolgreich durchgeführt.";
+    private static final String MSG_BOX_ERROR_TITLE = "Fehler";
+    private static final String MSG_BOX_SUCCESS_TITLE = "Erfolg";
 
     private final GridLayoutManager applicationLayoutManager;
     private final Logic logic;
@@ -108,41 +115,6 @@ public class ApplicationWindow extends Window {
         // show help at start up
         mainPanel = getHelpPanel();
         applicationLayoutManager.addWidget(mainPanel, 0, 1, 1, 1, ALIGNMENT_CENTER, ALIGNMENT_CENTER);
-    }
-
-    private String calculateTotalPrice() {
-        int totalPrice = 0;
-
-        final Size selectedSize = sizeList.getSelectedPizzaItem();
-        if (selectedSize != null) {
-            totalPrice += selectedSize.getPrice();
-        }
-
-        final Dough selectedDough = doughList.getSelectedPizzaItem();
-        if (selectedDough != null) {
-            totalPrice += selectedDough.getPrice();
-        }
-
-        final Sauce selectedSauce = sauceList.getSelectedPizzaItem();
-        if (selectedSauce != null) {
-            totalPrice += selectedSauce.getPrice();
-        }
-
-        for (final Topping topping : toppingList.getSelectedPizzaItems()) {
-            totalPrice += topping.getPrice();
-        }
-
-        int quantity = 1;
-        try {
-            quantity = Integer.parseInt(pizzaQuantity.getText());
-        } catch (final NumberFormatException ex) {
-            quantity = 1;
-        }
-
-        totalPrice *= quantity;
-
-        return TOTAL_PRICE
-                        + String.format(WidgetUtil.CURRENCY_FORMAT, Double.valueOf((double) totalPrice / (double) 100));
     }
 
     private Panel getManageIngredientsPanel() {
@@ -193,9 +165,9 @@ public class ApplicationWindow extends Window {
                     final List<Topping> toppings = logic.getToppings();
                     toppings.add(newTopping);
                     logic.saveToppings(toppings);
-                    new Message("Erfolg", "Erfolgreich gespeichert", OK_LABEL).show();
+                    new Message(MSG_BOX_SUCCESS_TITLE, MSG_BOX_SUCCESS_TEXT, OK_LABEL).show();
                 } catch (final NumberFormatException ex) {
-                    new Message("Fehler", "Fehler beim Speichern", OK_LABEL).show();
+                    new Message(MSG_BOX_ERROR_TITLE, MSG_BOX_ERROR_TEXT, OK_LABEL).show();
                 }
             }
         });
@@ -213,16 +185,15 @@ public class ApplicationWindow extends Window {
                     final List<Dough> doughs = logic.getDoughs();
                     doughs.add(newDough);
                     logic.saveDoughs(doughs);
-                    new Message("Erfolg", "Erfolgreich gespeichert", OK_LABEL).show();
+                    new Message(MSG_BOX_SUCCESS_TITLE, MSG_BOX_SUCCESS_TEXT, OK_LABEL).show();
                 } catch (final NumberFormatException ex) {
-                    new Message("Fehler", "Fehler beim Speichern", OK_LABEL).show();
+                    new Message(MSG_BOX_ERROR_TITLE, MSG_BOX_ERROR_TEXT, OK_LABEL).show();
                 }
             }
         });
         manageIngredientsLayoutManager.addWidget(newSaveDoughButton, 2, 2, 2, 1, ALIGNMENT_CENTER, ALIGNMENT_CENTER);
 
         final Button newSaveSauceButton = new Button(SAVE_SAUCE_BTN);
-        // TODO: save new sauce
         newSaveSauceButton.addListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent event) {
@@ -234,9 +205,9 @@ public class ApplicationWindow extends Window {
                     final List<Sauce> sauces = logic.getSauces();
                     sauces.add(newSauce);
                     logic.saveSauces(sauces);
-                    new Message("Erfolg", "Erfolgreich gespeichert", OK_LABEL).show();
+                    new Message(MSG_BOX_SUCCESS_TITLE, MSG_BOX_SUCCESS_TEXT, OK_LABEL).show();
                 } catch (final NumberFormatException ex) {
-                    new Message("Fehler", "Fehler beim Speichern", OK_LABEL).show();
+                    new Message(MSG_BOX_ERROR_TITLE, MSG_BOX_ERROR_TEXT, OK_LABEL).show();
                 }
             }
         });
@@ -251,7 +222,14 @@ public class ApplicationWindow extends Window {
                 existingToppings.select(i);
             }
         }
-        // TODO: save visibility
+        existingToppings.addListener(new ItemListener() {
+            @Override
+            public void stateChanged(final ItemEvent event) {
+                if (ItemEvent.CALLED == event.getType()) {
+                    // TODO: save visibility
+                }
+            }
+        });
         manageIngredientsLayoutManager.addWidget(existingToppings, 0, 3, 2, 1, ALIGNMENT_CENTER, ALIGNMENT_CENTER);
 
         final ListWidget<Dough> existingDoughs = new ListWidget<Dough>(logic.getDoughs(), true);
@@ -263,7 +241,14 @@ public class ApplicationWindow extends Window {
                 existingDoughs.select(i);
             }
         }
-        // TODO: save visibility
+        existingDoughs.addListener(new ItemListener() {
+            @Override
+            public void stateChanged(final ItemEvent event) {
+                if (ItemEvent.CALLED == event.getType()) {
+                    // TODO: save visibility
+                }
+            }
+        });
         manageIngredientsLayoutManager.addWidget(existingDoughs, 2, 3, 2, 1, ALIGNMENT_CENTER, ALIGNMENT_CENTER);
 
         final ListWidget<Sauce> existingSauces = new ListWidget<Sauce>(logic.getSauces(), true);
@@ -275,7 +260,14 @@ public class ApplicationWindow extends Window {
                 existingSauces.select(i);
             }
         }
-        // TODO: save visibility
+        existingSauces.addListener(new ItemListener() {
+            @Override
+            public void stateChanged(final ItemEvent event) {
+                if (ItemEvent.CALLED == event.getType()) {
+                    // TODO: save visibility
+                }
+            }
+        });
         manageIngredientsLayoutManager.addWidget(existingSauces, 4, 3, 2, 1, ALIGNMENT_CENTER, ALIGNMENT_CENTER);
 
         return newManageIngredientsPanel;
@@ -325,42 +317,50 @@ public class ApplicationWindow extends Window {
         totalPriceButton.addListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent event) {
-                final StringBuilder messageBoxText = new StringBuilder(calculateTotalPrice());
 
+                final Size selectedSize = sizeList.getSelectedPizzaItem();
+                if (selectedSize == null) {
+                    new Message(MSG_BOX_ERROR_TITLE, MSG_BOX_NO_SIZE_LABEL, OK_LABEL).show();
+                    return;
+                }
+
+                final Dough selectedDough = doughList.getSelectedPizzaItem();
+                if (selectedDough == null) {
+                    new Message(MSG_BOX_ERROR_TITLE, MSG_BOX_NO_DOUGH_LABEL, OK_LABEL).show();
+                    return;
+                }
+
+                final Sauce selectedSauce = sauceList.getSelectedPizzaItem();
+                if (selectedSauce == null) {
+                    new Message(MSG_BOX_ERROR_TITLE, MSG_BOX_NO_SAUCE_LABEL, OK_LABEL).show();
+                    return;
+                }
+
+                final StringBuilder messageBoxText = new StringBuilder();
+
+                final Pizza pizza = logic.createPizza(selectedSize, selectedDough, selectedSauce,
+                                toppingList.getSelectedPizzaItems());
+
+                final Double totalPrice = Double.valueOf((double) pizza.getTotalPrice() / (double) 100);
+                messageBoxText.append(TOTAL_PRICE + String.format(WidgetUtil.CURRENCY_FORMAT, totalPrice));
                 messageBoxText.append(NEW_LINE);
                 messageBoxText.append(MSG_BOX_SIZE_LABEL);
-                final Size selectedSize = sizeList.getSelectedPizzaItem();
-                if (selectedSize != null) {
-                    messageBoxText.append(selectedSize.getName());
-                } else {
-                    messageBoxText.append(MSG_BOX_NO_SIZE_LABEL);
-                }
-
+                messageBoxText.append(pizza.getSize().getName());
                 messageBoxText.append(NEW_LINE);
                 messageBoxText.append(MSG_BOX_DOUGH_LABEL);
-                final Dough selectedDough = doughList.getSelectedPizzaItem();
-                if (selectedDough != null) {
-                    messageBoxText.append(selectedDough.getName());
-                } else {
-                    messageBoxText.append(MSG_BOX_NO_DOUGH_LABEL);
-                }
-
+                messageBoxText.append(pizza.getDough().getName());
                 messageBoxText.append(NEW_LINE);
                 messageBoxText.append(MSG_BOX_SAUCE_LABEL);
-                final Sauce selectedSauce = sauceList.getSelectedPizzaItem();
-                if (selectedSauce != null) {
-                    messageBoxText.append(selectedSauce.getName());
-                } else {
-                    messageBoxText.append(MSG_BOX_NO_SAUCE_LABEL);
-                }
+
+                messageBoxText.append(pizza.getSauce().getName());
 
                 messageBoxText.append(NEW_LINE);
                 messageBoxText.append(MSG_BOX_TOPPINGS_LABEL);
-                final List<Topping> selectedToppings = toppingList.getSelectedPizzaItems();
-                if (selectedToppings.isEmpty()) {
+
+                if (pizza.getToppings().isEmpty()) {
                     messageBoxText.append(MSG_BOX_NO_TOPPINGS_LABEL);
                 } else {
-                    messageBoxText.append(Joiner.on(", ").join(TOPPING_UTIL.getNames(selectedToppings)));
+                    messageBoxText.append(Joiner.on(", ").join(TOPPING_UTIL.getNames(pizza.getToppings())));
                 }
 
                 final Message msg = new Message(TOTAL_PRICE_MSG_BOX_TITLE, messageBoxText.toString(), OK_LABEL);
@@ -390,13 +390,13 @@ public class ApplicationWindow extends Window {
     protected void handleInput(final InputChar inp) {
         super.handleInput(inp);
         if (inp.isSpecialCode()) {
-            if (inp.getCode() == InputChar.KEY_F2) {
+            if (inp.getCode() == InputChar.KEY_F3) {
                 applicationLayoutManager.removeWidget(mainPanel);
                 mainPanel = getNewPizzaPanel(logic);
                 applicationLayoutManager.addWidget(mainPanel, 0, 1, 1, 1, ALIGNMENT_CENTER, ALIGNMENT_CENTER);
                 pack();
                 repaint();
-            } else if (inp.getCode() == InputChar.KEY_F3) {
+            } else if (inp.getCode() == InputChar.KEY_F2) {
                 applicationLayoutManager.removeWidget(mainPanel);
                 mainPanel = getManageIngredientsPanel();
                 applicationLayoutManager.addWidget(mainPanel, 0, 1, 1, 1, ALIGNMENT_CENTER, ALIGNMENT_CENTER);

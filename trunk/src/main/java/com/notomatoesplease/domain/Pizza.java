@@ -4,10 +4,10 @@ import java.util.List;
 
 public class Pizza {
 
-    private Size size;
-    private Dough dough;
-    private Sauce sauce;
-    private List<Topping> toppings;
+    private final Size size;
+    private final Dough dough;
+    private final Sauce sauce;
+    private final List<Topping> toppings;
 
     public Pizza(final Size size, final Dough dough, final Sauce sauce, final List<Topping> toppings) {
         this.size = size;
@@ -30,6 +30,19 @@ public class Pizza {
 
     public List<Topping> getToppings() {
         return toppings;
+    }
+
+    public int getTotalPrice() {
+        int price = 0;
+        price += size.getPrice();
+        price += dough.getPrice();
+        price += sauce.getPrice();
+
+        for (final Topping top : toppings) {
+            price += top.getPrice();
+        }
+
+        return price;
     }
 
     @Override
