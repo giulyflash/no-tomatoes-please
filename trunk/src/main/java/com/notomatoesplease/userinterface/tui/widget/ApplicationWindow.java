@@ -249,7 +249,13 @@ public class ApplicationWindow extends Window {
             @Override
             public void stateChanged(final ItemEvent event) {
                 if (ItemEvent.CALLED == event.getType()) {
-                    // TODO: save visibility for toppings
+                    final List<Topping> selectedToppings = existingToppings.getSelectedPizzaItems();
+                    final List<Topping> allToppings = existingToppings.getPizzaItems();
+                    for (final Topping topping : allToppings) {
+                        topping.setVisible(selectedToppings.contains(topping));
+                    }
+                    logic.saveToppings(allToppings);
+                    new Message(MSG_BOX_SUCCESS_TITLE, MSG_BOX_SUCCESS_TEXT, OK_LABEL).show();
                 }
             }
         });
@@ -268,7 +274,13 @@ public class ApplicationWindow extends Window {
             @Override
             public void stateChanged(final ItemEvent event) {
                 if (ItemEvent.CALLED == event.getType()) {
-                    // TODO: save visibility for doughs
+                    final List<Dough> selectedDoughs = existingDoughs.getSelectedPizzaItems();
+                    final List<Dough> allDoughs = existingDoughs.getPizzaItems();
+                    for (final Dough dough : allDoughs) {
+                        dough.setVisible(selectedDoughs.contains(dough));
+                    }
+                    logic.saveDoughs(allDoughs);
+                    new Message(MSG_BOX_SUCCESS_TITLE, MSG_BOX_SUCCESS_TEXT, OK_LABEL).show();
                 }
             }
         });
@@ -287,7 +299,13 @@ public class ApplicationWindow extends Window {
             @Override
             public void stateChanged(final ItemEvent event) {
                 if (ItemEvent.CALLED == event.getType()) {
-                    // TODO: save visibility for sauces
+                    final List<Sauce> selectedSauces = existingSauces.getSelectedPizzaItems();
+                    final List<Sauce> allSauces = existingSauces.getPizzaItems();
+                    for (final Sauce dough : allSauces) {
+                        dough.setVisible(selectedSauces.contains(dough));
+                    }
+                    logic.saveSauces(allSauces);
+                    new Message(MSG_BOX_SUCCESS_TITLE, MSG_BOX_SUCCESS_TEXT, OK_LABEL).show();
                 }
             }
         });
