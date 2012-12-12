@@ -30,14 +30,18 @@ public class ListWidget<T extends PizzaProperty> extends List {
 
     public ListWidget(final java.util.List<T> items, final int visibleSize, final boolean multiple) {
         super(visibleSize, multiple);
-        for (final T item : items) {
-            add(item);
-        }
+        addAll(items);
     }
 
     public void add(final int pos, final T item) {
         elements.add(pos, item);
         super.add(pos, propertyToString(item));
+    }
+
+    public void addAll(final java.util.List<T> items) {
+        for (final T item : items) {
+            add(item);
+        }
     }
 
     public void add(final T item) {
@@ -183,6 +187,22 @@ public class ListWidget<T extends PizzaProperty> extends List {
         } catch (final IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * removes all elements from this list.
+     */
+    public void removeAll() {
+        for (final T item : elements) {
+            remove(propertyToString(item));
+        }
+        elements.clear();
+    }
+
+    public void updateList(final java.util.List<T> items) {
+        removeAll();
+        addAll(items);
+        doRepaint();
     }
 
 }

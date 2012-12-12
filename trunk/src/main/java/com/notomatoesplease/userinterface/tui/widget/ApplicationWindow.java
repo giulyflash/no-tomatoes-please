@@ -1,5 +1,7 @@
 package com.notomatoesplease.userinterface.tui.widget;
 
+import static com.notomatoesplease.util.PizzaUtil.DOUGH_UTIL;
+import static com.notomatoesplease.util.PizzaUtil.SAUCE_UTIL;
 import static com.notomatoesplease.util.PizzaUtil.TOPPING_UTIL;
 import static jcurses.widgets.WidgetsConstants.ALIGNMENT_CENTER;
 
@@ -79,6 +81,9 @@ public class ApplicationWindow extends Window {
     private ListWidget<Topping> toppingList = null;
     private TextField pizzaQuantity = null;
     private Panel mainPanel = null;
+    private ListWidget<Topping> existingToppings;
+    private ListWidget<Dough> existingDoughs;
+    private ListWidget<Sauce> existingSauces;
 
     public ApplicationWindow(final Logic logic, final int width, final int height) {
         super(width, height, true, APPLICATION_TITLE);
@@ -166,6 +171,12 @@ public class ApplicationWindow extends Window {
                     toppings.add(newTopping);
                     logic.saveToppings(toppings);
                     new Message(MSG_BOX_SUCCESS_TITLE, MSG_BOX_SUCCESS_TEXT, OK_LABEL).show();
+                    existingToppings.updateList(logic.getToppings());
+                    for (int i = 0; i < existingToppings.getPizzaItems().size(); i++) {
+                        if (existingToppings.getPizzaItem(i).isVisible()) {
+                            existingToppings.select(i);
+                        }
+                    }
                 } catch (final NumberFormatException ex) {
                     new Message(MSG_BOX_ERROR_TITLE, MSG_BOX_ERROR_TEXT, OK_LABEL).show();
                 }
@@ -186,6 +197,12 @@ public class ApplicationWindow extends Window {
                     doughs.add(newDough);
                     logic.saveDoughs(doughs);
                     new Message(MSG_BOX_SUCCESS_TITLE, MSG_BOX_SUCCESS_TEXT, OK_LABEL).show();
+                    existingDoughs.updateList(logic.getDoughs());
+                    for (int i = 0; i < existingDoughs.getPizzaItems().size(); i++) {
+                        if (existingDoughs.getPizzaItem(i).isVisible()) {
+                            existingDoughs.select(i);
+                        }
+                    }
                 } catch (final NumberFormatException ex) {
                     new Message(MSG_BOX_ERROR_TITLE, MSG_BOX_ERROR_TEXT, OK_LABEL).show();
                 }
@@ -206,6 +223,12 @@ public class ApplicationWindow extends Window {
                     sauces.add(newSauce);
                     logic.saveSauces(sauces);
                     new Message(MSG_BOX_SUCCESS_TITLE, MSG_BOX_SUCCESS_TEXT, OK_LABEL).show();
+                    existingSauces.updateList(logic.getSauces());
+                    for (int i = 0; i < existingSauces.getPizzaItems().size(); i++) {
+                        if (existingSauces.getPizzaItem(i).isVisible()) {
+                            existingSauces.select(i);
+                        }
+                    }
                 } catch (final NumberFormatException ex) {
                     new Message(MSG_BOX_ERROR_TITLE, MSG_BOX_ERROR_TEXT, OK_LABEL).show();
                 }
@@ -213,7 +236,7 @@ public class ApplicationWindow extends Window {
         });
         manageIngredientsLayoutManager.addWidget(newSaveSauceButton, 4, 2, 2, 1, ALIGNMENT_CENTER, ALIGNMENT_CENTER);
 
-        final ListWidget<Topping> existingToppings = new ListWidget<Topping>(logic.getToppings(), true);
+        existingToppings = new ListWidget<Topping>(logic.getToppings(), true);
         existingToppings.setTitle(EXISTING_TOPPINGS_TITLE);
         existingToppings.setSelectedItemColors(WidgetUtil.SELECT_ITEM_COLOR);
         existingToppings.setTitleColors(WidgetUtil.TITLE_COLOR);
@@ -226,13 +249,13 @@ public class ApplicationWindow extends Window {
             @Override
             public void stateChanged(final ItemEvent event) {
                 if (ItemEvent.CALLED == event.getType()) {
-                    // TODO: save visibility
+                    // TODO: save visibility for toppings
                 }
             }
         });
         manageIngredientsLayoutManager.addWidget(existingToppings, 0, 3, 2, 1, ALIGNMENT_CENTER, ALIGNMENT_CENTER);
 
-        final ListWidget<Dough> existingDoughs = new ListWidget<Dough>(logic.getDoughs(), true);
+        existingDoughs = new ListWidget<Dough>(logic.getDoughs(), true);
         existingDoughs.setTitle(EXISTING_DOUGHS_TITLE);
         existingDoughs.setSelectedItemColors(WidgetUtil.SELECT_ITEM_COLOR);
         existingDoughs.setTitleColors(WidgetUtil.TITLE_COLOR);
@@ -245,13 +268,13 @@ public class ApplicationWindow extends Window {
             @Override
             public void stateChanged(final ItemEvent event) {
                 if (ItemEvent.CALLED == event.getType()) {
-                    // TODO: save visibility
+                    // TODO: save visibility for doughs
                 }
             }
         });
         manageIngredientsLayoutManager.addWidget(existingDoughs, 2, 3, 2, 1, ALIGNMENT_CENTER, ALIGNMENT_CENTER);
 
-        final ListWidget<Sauce> existingSauces = new ListWidget<Sauce>(logic.getSauces(), true);
+        existingSauces = new ListWidget<Sauce>(logic.getSauces(), true);
         existingSauces.setTitle(EXISTING_SAUCES_TITLE);
         existingSauces.setSelectedItemColors(WidgetUtil.SELECT_ITEM_COLOR);
         existingSauces.setTitleColors(WidgetUtil.TITLE_COLOR);
@@ -264,7 +287,7 @@ public class ApplicationWindow extends Window {
             @Override
             public void stateChanged(final ItemEvent event) {
                 if (ItemEvent.CALLED == event.getType()) {
-                    // TODO: save visibility
+                    // TODO: save visibility for sauces
                 }
             }
         });
@@ -286,21 +309,21 @@ public class ApplicationWindow extends Window {
         createPizzaLayoutManager.addWidget(sizeList, 0, 0, 1, 1, ALIGNMENT_CENTER, ALIGNMENT_CENTER);
 
         // dough selection widget
-        doughList = new ListWidget<Dough>(logic.getDoughs(), 7);
+        doughList = new ListWidget<Dough>(DOUGH_UTIL.getVisibleOnly(logic.getDoughs()), 7);
         doughList.setTitle(TITLE_DOUGH);
         doughList.setSelectedItemColors(WidgetUtil.SELECT_ITEM_COLOR);
         doughList.setTitleColors(WidgetUtil.TITLE_COLOR);
         createPizzaLayoutManager.addWidget(doughList, 2, 0, 1, 1, ALIGNMENT_CENTER, ALIGNMENT_CENTER);
 
         // sauce selection widget
-        sauceList = new ListWidget<Sauce>(logic.getSauces(), 7);
+        sauceList = new ListWidget<Sauce>(SAUCE_UTIL.getVisibleOnly(logic.getSauces()), 7);
         sauceList.setTitle(TITLE_SAUCE);
         sauceList.setSelectedItemColors(WidgetUtil.SELECT_ITEM_COLOR);
         sauceList.setTitleColors(WidgetUtil.TITLE_COLOR);
         createPizzaLayoutManager.addWidget(sauceList, 0, 1, 1, 1, ALIGNMENT_CENTER, ALIGNMENT_CENTER);
 
         // toppings selection widget
-        toppingList = new ListWidget<Topping>(logic.getToppings(), 7, true);
+        toppingList = new ListWidget<Topping>(TOPPING_UTIL.getVisibleOnly(logic.getToppings()), 7, true);
         toppingList.setTitle(TITLE_TOPPINGS);
         toppingList.setSelectedItemColors(WidgetUtil.SELECT_ITEM_COLOR);
         toppingList.setTitleColors(WidgetUtil.TITLE_COLOR);
