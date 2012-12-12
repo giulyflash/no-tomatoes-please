@@ -32,8 +32,7 @@ public class PizzaBakery {
     }
 
     public PizzaBakery sprinkle(final List<Topping> toppings) {
-        this.toppings = Lists.newArrayList();
-        this.toppings.addAll(toppings);
+        this.toppings = Lists.newArrayList(toppings);
         return this;
     }
 

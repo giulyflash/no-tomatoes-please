@@ -341,7 +341,14 @@ public class ApplicationWindow extends Window {
                 final Pizza pizza = logic.createPizza(selectedSize, selectedDough, selectedSauce,
                                 toppingList.getSelectedPizzaItems());
 
-                final Double totalPrice = Double.valueOf((double) pizza.getTotalPrice() / (double) 100);
+                int quantity = 1;
+                try {
+                    quantity = Integer.parseInt(pizzaQuantity.getText());
+                } catch (final NumberFormatException ex) {
+                    quantity = 1;
+                }
+
+                final Double totalPrice = Double.valueOf((double) (pizza.getTotalPrice() * quantity) / 100);
                 messageBoxText.append(TOTAL_PRICE + String.format(WidgetUtil.CURRENCY_FORMAT, totalPrice));
                 messageBoxText.append(NEW_LINE);
                 messageBoxText.append(MSG_BOX_SIZE_LABEL);
