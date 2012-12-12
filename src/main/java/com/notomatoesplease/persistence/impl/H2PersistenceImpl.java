@@ -15,6 +15,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.notomatoesplease.domain.Dough;
 import com.notomatoesplease.domain.Sauce;
@@ -25,8 +27,16 @@ import com.notomatoesplease.persistence.Persistence;
 public class H2PersistenceImpl implements Persistence {
 
     private static final Logger LOG = LoggerFactory.getLogger(H2PersistenceImpl.class);
+    private final String url;
 
     public H2PersistenceImpl() {
+        this("jdbc:h2:file:classes/database/pizza");
+    }
+
+    @VisibleForTesting
+    public H2PersistenceImpl(final String url) {
+        Preconditions.checkNotNull(url, "url must not be null");
+        this.url = url;
         LOG.debug("using H2 database");
     }
 
@@ -259,7 +269,7 @@ public class H2PersistenceImpl implements Persistence {
         try {
             Class.forName("org.h2.Driver");
 
-            return DriverManager.getConnection("jdbc:h2:file:./data/pizza", "resu", "drowssap");
+            return DriverManager.getConnection(url, "resu", "drowssap");
         } catch (final SQLException sqle) {
             LOG.error("getConnection() driver sql error" + sqle);
             return null;
