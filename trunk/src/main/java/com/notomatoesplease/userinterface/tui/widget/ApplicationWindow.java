@@ -43,6 +43,7 @@ public class ApplicationWindow extends Window {
     private static final String MSG_BOX_SAUCE_LABEL = "Sauce: ";
     private static final String MSG_BOX_DOUGH_LABEL = "Teig: ";
     private static final String MSG_BOX_SIZE_LABEL = "Größe: ";
+    private static final String MSG_BOX_QUANTITY_LABEL = "Anzahl: ";
     private static final String NEW_LINE = "\n";
     private static final String SAVE_SAUCE_BTN = "Sauce speichern";
     private static final String SAVE_DOUGH_BTN = "Teig speichern";
@@ -390,7 +391,11 @@ public class ApplicationWindow extends Window {
                 }
 
                 final Double totalPrice = Double.valueOf((double) (pizza.getTotalPrice() * quantity) / 100);
-                messageBoxText.append(TOTAL_PRICE + String.format(WidgetUtil.CURRENCY_FORMAT, totalPrice));
+                messageBoxText.append(TOTAL_PRICE);
+                messageBoxText.append(String.format(WidgetUtil.CURRENCY_FORMAT, totalPrice));
+                messageBoxText.append(NEW_LINE);
+                messageBoxText.append(MSG_BOX_QUANTITY_LABEL);
+                messageBoxText.append(pizzaQuantity.getText());
                 messageBoxText.append(NEW_LINE);
                 messageBoxText.append(MSG_BOX_SIZE_LABEL);
                 messageBoxText.append(pizza.getSize().getName());
