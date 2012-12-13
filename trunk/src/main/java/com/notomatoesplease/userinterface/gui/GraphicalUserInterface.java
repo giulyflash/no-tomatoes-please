@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,6 +15,7 @@ import javax.swing.JTabbedPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.Lists;
 import com.notomatoesplease.domain.Dough;
 import com.notomatoesplease.domain.Sauce;
 import com.notomatoesplease.domain.Size;
@@ -22,6 +24,7 @@ import com.notomatoesplease.logic.Logic;
 import com.notomatoesplease.userinterface.AbstractUserInterface;
 import com.notomatoesplease.userinterface.UserInterface;
 import com.notomatoesplease.userinterface.gui.widget.PizzaComboBox;
+import com.notomatoesplease.userinterface.gui.widget.PizzaIngredientTable;
 
 public class GraphicalUserInterface extends AbstractUserInterface implements UserInterface {
 
@@ -37,8 +40,7 @@ public class GraphicalUserInterface extends AbstractUserInterface implements Use
         LOG.debug("using graphical user interface");
     }
 
-    @Override
-    public void run() {
+    private void show() {
         // Window
         List<Size> sizeList = getLogic().getSizes();
         List<Dough> doughList = getLogic().getDoughs();
@@ -52,12 +54,28 @@ public class GraphicalUserInterface extends AbstractUserInterface implements Use
         JButton addToppingButton = new JButton(ADD_TOPPING_BUTTON);
 
         JPanel panelIngredients = new JPanel();
+
+
+
         JPanel panelPizza = new JPanel();
         panelPizza.add(sizeComboBox);
         panelPizza.add(doughComboBox);
         panelPizza.add(sauceComboBox);
         panelPizza.add(toppingComboBox);
         panelPizza.add(addToppingButton);
+
+        Vector<String> names = new Vector<String>();
+        names.add("Belag");
+        names.add("Preis in €");
+        names.add("Ausgewählt");
+        List<Topping> zeugslist = Lists.newArrayList();
+        Topping testTop = new Topping();
+        testTop.setName("aaa");
+        testTop.setPrice(123);
+        testTop.setVisible(true);
+        zeugslist.add(testTop);
+        PizzaIngredientTable<Topping> toppingTable = new PizzaIngredientTable<Topping>(names, zeugslist);
+        panelPizza.add(toppingTable.getScroll());
 
         JTabbedPane tabs = new JTabbedPane(JTabbedPane.TOP);
         tabs.add(EDIT_INGRIDIENTS_TAB, panelIngredients);
@@ -77,23 +95,28 @@ public class GraphicalUserInterface extends AbstractUserInterface implements Use
             }
         );
 
-        addToppingButton.addActionListener(new AddToppingListener(toppingComboBox));
+        addToppingButton.addActionListener(new AddToppingListener(toppingComboBox, toppingTable));
+    }
+
+    @Override
+    public void run() {
+        show();
     }
 
     private class AddToppingListener implements ActionListener {
         private final PizzaComboBox<Topping> toppingComboBox;
+        private final PizzaIngredientTable<Topping> toppingTable;
 
-        public AddToppingListener(final PizzaComboBox<Topping> toppingComboBox) {
+        public AddToppingListener(final PizzaComboBox<Topping> toppingComboBox, final PizzaIngredientTable<Topping> toppingTable) {
             super();
             this.toppingComboBox = toppingComboBox;
+            this.toppingTable = toppingTable;
         }
 
         @Override
         public void actionPerformed(final ActionEvent e) {
-            Object[] o = {toppingComboBox.getSelectedProperty().getName(),
-                    Integer.valueOf(toppingComboBox.getSelectedProperty().getPrice()),
-                    toppingComboBox.getSelectedProperty().getType()};
-            LOG.info("add topping test: {} {} {}", o);
+            LOG.info(toppingComboBox.getSelectedProperty().toString());
+            toppingTable.addIngredient(toppingComboBox.getSelectedProperty());
         }
     }
 }
