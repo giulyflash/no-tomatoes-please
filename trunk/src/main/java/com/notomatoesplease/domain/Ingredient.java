@@ -19,6 +19,8 @@ public abstract class Ingredient extends PizzaProperty {
         final StringBuilder builder = new StringBuilder();
         builder.append("Ingredient [name=");
         builder.append(getName());
+        builder.append(", type=");
+        builder.append(getType());
         builder.append(", price=");
         builder.append(getPrice());
         builder.append(", visible=");

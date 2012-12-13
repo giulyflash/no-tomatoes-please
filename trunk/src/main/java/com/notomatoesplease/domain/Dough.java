@@ -8,5 +8,4 @@ public class Dough extends Ingredient {
     public IngredientType getType() {
         return IngredientType.DOUGH;
     }
-
 }
