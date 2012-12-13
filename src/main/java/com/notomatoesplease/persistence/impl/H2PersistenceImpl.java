@@ -61,11 +61,11 @@ public class H2PersistenceImpl implements Persistence {
                     resList.add(res);
                 }
 
-                LOG.debug("getSizes() reservations found: " + resList.size());
+                LOG.debug("getSizes() sizes found: {}", resList.size());
             }
 
         } catch (final SQLException se) {
-            LOG.error("getSizes() failed ... " + se);
+            LOG.error("getSizes() failed ... ", se);
         } finally {
             closeConnections(con, rs, prest);
         }
@@ -95,11 +95,11 @@ public class H2PersistenceImpl implements Persistence {
                     resList.add(dough);
                 }
 
-                LOG.debug("getDoughs() reservations found: " + resList.size());
+                LOG.debug("getDoughs() doughs found: {}", resList.size());
             }
 
         } catch (final SQLException se) {
-            LOG.error("getDoughs() failed ... " + se);
+            LOG.error("getDoughs() failed ... ", se);
         } finally {
             closeConnections(con, rs, prest);
         }
@@ -129,11 +129,11 @@ public class H2PersistenceImpl implements Persistence {
                     resList.add(sauce);
                 }
 
-                LOG.debug("getSauces() reservations found: " + resList.size());
+                LOG.debug("getSauces() sauces found: {}", resList.size());
             }
 
         } catch (final SQLException se) {
-            LOG.error("getSauces() failed ... " + se);
+            LOG.error("getSauces() failed ... ", se);
         } finally {
             closeConnections(con, rs, prest);
         }
@@ -163,11 +163,11 @@ public class H2PersistenceImpl implements Persistence {
                     resList.add(topping);
                 }
 
-                LOG.debug("getToppings() reservations found: " + resList.size());
+                LOG.debug("getToppings() toppings found: {}", resList.size());
             }
 
         } catch (final SQLException se) {
-            LOG.error("getToppings() failed ... " + se);
+            LOG.error("getToppings() failed ... ", se);
         } finally {
             closeConnections(con, rs, prest);
         }
@@ -199,7 +199,7 @@ public class H2PersistenceImpl implements Persistence {
                 }
             }
         } catch (final SQLException se) {
-            LOG.error("saveToppings() failed ... " + se);
+            LOG.error("saveToppings() failed ... ", se);
         } finally {
             closeConnections(con, null, prest);
         }
@@ -229,7 +229,7 @@ public class H2PersistenceImpl implements Persistence {
                 }
             }
         } catch (final SQLException se) {
-            LOG.error("saveDoughs() failed ... " + se);
+            LOG.error("saveDoughs() failed ... ", se);
         } finally {
             closeConnections(con, null, prest);
         }
@@ -259,7 +259,7 @@ public class H2PersistenceImpl implements Persistence {
                 }
             }
         } catch (final SQLException se) {
-            LOG.error("saveSauces() failed ... " + se);
+            LOG.error("saveSauces() failed ... ", se);
         } finally {
             closeConnections(con, null, prest);
         }
@@ -268,13 +268,12 @@ public class H2PersistenceImpl implements Persistence {
     private Connection getConnection() {
         try {
             Class.forName("org.h2.Driver");
-
             return DriverManager.getConnection(url, "resu", "drowssap");
         } catch (final SQLException sqle) {
-            LOG.error("getConnection() driver sql error" + sqle);
+            LOG.error("getConnection() driver sql error", sqle);
             return null;
         } catch (final ClassNotFoundException cnfe) {
-            LOG.error("getConnection() driver not found error" + cnfe);
+            LOG.error("getConnection() driver not found error", cnfe);
             return null;
         }
     }
@@ -293,7 +292,7 @@ public class H2PersistenceImpl implements Persistence {
                 con.close();
             }
         } catch (final SQLException sqle) {
-            LOG.error("closeConnections() sql close exception " + sqle);
+            LOG.error("closeConnections() sql close exception ", sqle);
         }
     }
 }

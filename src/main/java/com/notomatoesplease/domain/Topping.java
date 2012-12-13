@@ -8,5 +8,4 @@ public class Topping extends Ingredient {
     public IngredientType getType() {
         return IngredientType.TOPPING;
     }
-
 }

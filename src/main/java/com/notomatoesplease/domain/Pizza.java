@@ -48,7 +48,9 @@ public class Pizza {
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
-        builder.append("Pizza [size=");
+        builder.append("Pizza [totalPrice=");
+        builder.append(getTotalPrice());
+        builder.append(" ,size=");
         builder.append(size);
         builder.append(", dough=");
         builder.append(dough);
