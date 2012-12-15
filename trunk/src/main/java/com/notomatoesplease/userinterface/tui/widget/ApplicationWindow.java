@@ -65,9 +65,9 @@ public class ApplicationWindow extends Window {
     private static final String MANAGE_INGREDIENTS_LABEL = " Zutaten bearbeiten <F2> ";
     private static final String CREATE_PIZZA_LABEL = " Pizza erstellen <F3> ";
     private static final String HELP_LABEL = " Hilfe <F1> ";
-    private static final String HELP_LABEL_1 = "Drücke 'F1', um diese Hilfe anzuzeigen.";
-    private static final String HELP_LABEL_2 = "Drücke 'F2', um Zutaten zu bearbeiten oder neue hinzuzufügen.";
-    private static final String HELP_LABEL_3 = "Drücke 'F3', um eine neue Pizza zu erstellen.";
+    private static final String HELP_LABEL_1 = "Drücke 'F1', um diese Hilfe anzuzeigen.\nDrücke 'F2', um die Sichtbarkeit der Zutaten zu bearbeiten oder neue Zutaten hinzuzufügen.\nDrücke 'F3', um eine neue Pizza zu erstellen.\n\nAllgemeine Steuerung\nMit Hilfe der Tab-Taste kann zwischen den Listen, Eingabefeldern und Schaltflächen gewechselt werden.\nSchaltflächen werden mit der ENTER-Taste ausgelöst.\nMit den Pfeiltasten können die Einträge in einer Liste markiert werden.";
+    private static final String HELP_LABEL_2 = "Zutaten bearbeiten\nDie grüne Farbe eines Listeneintrags signalisiert, dass dieser Eintrag im 'Pizza erstellen'-Menü sichtbar ist.\nMit der Leerzeichen-Taste beim entsprechenden Eintrag kann dieser Zustand geändert werden.\nDie ENTER-Taste speichert die Sichtbarkeit der Einträge ab.";
+    private static final String HELP_LABEL_3 = "Pizza erstellen\nDie Bestandteile der Pizza können in der jeweiligen Liste mit der Leerzeichen-Taste ausgewählt werden.\nEs ist möglich mehrere Beläge zu selektieren. Die Schaltfläche 'Pizza abschließen' zeigt die Zusammenfassung der Pizza an.";
     private static final String MSG_BOX_ERROR_TEXT = "Es ist ein Fehler aufgetreten.";
     private static final String MSG_BOX_SUCCESS_TEXT = "Aktion wurde erfolgreich durchgeführt.";
     private static final String MSG_BOX_ERROR_TITLE = "Fehler";
@@ -395,7 +395,7 @@ public class ApplicationWindow extends Window {
                 messageBoxText.append(String.format(WidgetUtil.CURRENCY_FORMAT, totalPrice));
                 messageBoxText.append(NEW_LINE);
                 messageBoxText.append(MSG_BOX_QUANTITY_LABEL);
-                messageBoxText.append(pizzaQuantity.getText());
+                messageBoxText.append(quantity);
                 messageBoxText.append(NEW_LINE);
                 messageBoxText.append(MSG_BOX_SIZE_LABEL);
                 messageBoxText.append(pizza.getSize().getName());
