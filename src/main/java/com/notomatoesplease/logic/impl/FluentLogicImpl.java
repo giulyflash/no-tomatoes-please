@@ -12,8 +12,8 @@ import com.notomatoesplease.domain.Size;
 import com.notomatoesplease.domain.Topping;
 import com.notomatoesplease.logic.AbstractLogic;
 import com.notomatoesplease.logic.Logic;
+import com.notomatoesplease.logic.impl.fluent.PizzaBakery;
 import com.notomatoesplease.persistence.Persistence;
-import com.notomatoesplease.util.PizzaBakery;
 
 public class FluentLogicImpl extends AbstractLogic implements Logic {
 

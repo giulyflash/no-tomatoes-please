@@ -4,15 +4,24 @@ import java.util.List;
 
 public class Pizza {
 
-    private final Size size;
-    private final Dough dough;
-    private final Sauce sauce;
-    private final List<Topping> toppings;
+    private Size size;
+    private Dough dough;
+    private Sauce sauce;
+    private List<Topping> toppings;
 
-    public Pizza(final Size size, final Dough dough, final Sauce sauce, final List<Topping> toppings) {
+    public void setSize(final Size size) {
         this.size = size;
+    }
+
+    public void setDough(final Dough dough) {
         this.dough = dough;
+    }
+
+    public void setSauce(final Sauce sauce) {
         this.sauce = sauce;
+    }
+
+    public void setToppings(final List<Topping> toppings) {
         this.toppings = toppings;
     }
 
