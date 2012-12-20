@@ -30,11 +30,10 @@ import com.notomatoesplease.domain.Size;
 import com.notomatoesplease.domain.Topping;
 import com.notomatoesplease.logic.Logic;
 import com.notomatoesplease.userinterface.AbstractUserInterface;
-import com.notomatoesplease.userinterface.UserInterface;
 import com.notomatoesplease.userinterface.gui.widget.PizzaComboBox;
 import com.notomatoesplease.userinterface.gui.widget.PizzaIngredientTable;
 
-public class GraphicalUserInterface extends AbstractUserInterface implements UserInterface {
+public class GraphicalUserInterface extends AbstractUserInterface {
 
     private static final Logger LOG = LoggerFactory.getLogger(GraphicalUserInterface.class);
 
@@ -70,31 +69,31 @@ public class GraphicalUserInterface extends AbstractUserInterface implements Use
     }
 
     private void showMainWindow() {
-        List<Size> sizeList = getLogic().getSizes();
-        List<Dough> doughList = getLogic().getDoughs();
-        List<Sauce> sauceList = getLogic().getSauces();
-        List<Topping> toppingList = getLogic().getToppings();
+        final List<Size> sizeList = getLogic().getSizes();
+        final List<Dough> doughList = getLogic().getDoughs();
+        final List<Sauce> sauceList = getLogic().getSauces();
+        final List<Topping> toppingList = getLogic().getToppings();
 
         // Pizza creation tab
-        JLabel sizeLabel = new JLabel(SIZE);
-        JLabel doughLabel = new JLabel(DOUGH);
-        JLabel sauceLabel = new JLabel(SAUCE);
-        JLabel toppingLabel = new JLabel(TOPPING);
-        JLabel countLabel = new JLabel(COUNT);
-        JLabel addedToppingsLabel = new JLabel(ADDED_TOPPINGS);
-        JLabel totalPriceLabel = new JLabel(TOTAL_PRICE);
-        PizzaComboBox<Size> sizeComboBox = new PizzaComboBox<Size>(sizeList);
-        PizzaComboBox<Dough> doughComboBox = new PizzaComboBox<Dough>(doughList);
-        PizzaComboBox<Sauce> sauceComboBox = new PizzaComboBox<Sauce>(sauceList);
-        PizzaComboBox<Topping> toppingComboBox = new PizzaComboBox<Topping>(toppingList);
-        JButton addToppingButton = new JButton(ADD_TOPPING_BUTTON);
-        JButton createPizzaButton = new JButton(CREATE_PIZZA_BUTTON);
-        SpinnerNumberModel counterSpinnerModel = new SpinnerNumberModel(1, 1, 100, 1);
-        JSpinner counterSpinner = new JSpinner(counterSpinnerModel);
+        final JLabel sizeLabel = new JLabel(SIZE);
+        final JLabel doughLabel = new JLabel(DOUGH);
+        final JLabel sauceLabel = new JLabel(SAUCE);
+        final JLabel toppingLabel = new JLabel(TOPPING);
+        final JLabel countLabel = new JLabel(COUNT);
+        final JLabel addedToppingsLabel = new JLabel(ADDED_TOPPINGS);
+        final JLabel totalPriceLabel = new JLabel(TOTAL_PRICE);
+        final PizzaComboBox<Size> sizeComboBox = new PizzaComboBox<Size>(sizeList);
+        final PizzaComboBox<Dough> doughComboBox = new PizzaComboBox<Dough>(doughList);
+        final PizzaComboBox<Sauce> sauceComboBox = new PizzaComboBox<Sauce>(sauceList);
+        final PizzaComboBox<Topping> toppingComboBox = new PizzaComboBox<Topping>(toppingList);
+        final JButton addToppingButton = new JButton(ADD_TOPPING_BUTTON);
+        final JButton createPizzaButton = new JButton(CREATE_PIZZA_BUTTON);
+        final SpinnerNumberModel counterSpinnerModel = new SpinnerNumberModel(1, 1, 100, 1);
+        final JSpinner counterSpinner = new JSpinner(counterSpinnerModel);
 
-        JPanel panelIngredients = new JPanel();
+        final JPanel panelIngredients = new JPanel();
 
-        JPanel panelPizza = new JPanel();
+        final JPanel panelPizza = new JPanel();
         panelPizza.add(sizeLabel);
         panelPizza.add(sizeComboBox);
         panelPizza.add(doughLabel);
@@ -110,59 +109,62 @@ public class GraphicalUserInterface extends AbstractUserInterface implements Use
         panelPizza.add(createPizzaButton);
         panelPizza.add(addedToppingsLabel);
 
-        Vector<String> names = new Vector<String>();
+        final Vector<String> names = new Vector<String>();
         names.add(TOPPING);
         names.add(PRICE_IN_E);
         names.add(SELECTED_COL);
-        PizzaIngredientTable<Topping> toppingTable = new PizzaIngredientTable<Topping>(names, false);
+        final PizzaIngredientTable<Topping> toppingTable = new PizzaIngredientTable<Topping>(names, false);
         panelPizza.add(toppingTable.getPaneWithTable());
         // Pizza creation tab end
 
         // Pizza ingredient editing tab
-        JLabel newToppingLabel = new JLabel(NEW_TOPPING);
-        JLabel priceToppingLabel = new JLabel(PRICE_IN_E);
-        JLabel addedToppingLabel = new JLabel(ADDED_TOPPINGS);
-        JLabel newDoughLabel = new JLabel(NEW_DOUGH);
-        JLabel priceDoughLabel = new JLabel(PRICE_IN_E);
-        JLabel addedDoughLabel = new JLabel(ADDED_DOUGHS);
-        JLabel newSauceLabel = new JLabel(NEW_SAUCE);
-        JLabel priceSauceLabel = new JLabel(PRICE_IN_E);
-        JLabel addedSauceLabel = new JLabel(ADDED_SAUCES);
-        JTextField toppingNameField = new JTextField();
+        final JLabel newToppingLabel = new JLabel(NEW_TOPPING);
+        final JLabel priceToppingLabel = new JLabel(PRICE_IN_E);
+        final JLabel addedToppingLabel = new JLabel(ADDED_TOPPINGS);
+        final JLabel newDoughLabel = new JLabel(NEW_DOUGH);
+        final JLabel priceDoughLabel = new JLabel(PRICE_IN_E);
+        final JLabel addedDoughLabel = new JLabel(ADDED_DOUGHS);
+        final JLabel newSauceLabel = new JLabel(NEW_SAUCE);
+        final JLabel priceSauceLabel = new JLabel(PRICE_IN_E);
+        final JLabel addedSauceLabel = new JLabel(ADDED_SAUCES);
+        final JTextField toppingNameField = new JTextField();
         toppingNameField.setPreferredSize(new Dimension(50, 20));
-        JTextField doughNameField = new JTextField();
+        final JTextField doughNameField = new JTextField();
         doughNameField.setPreferredSize(new Dimension(50, 20));
-        JTextField sauceNameField = new JTextField();
+        final JTextField sauceNameField = new JTextField();
         sauceNameField.setPreferredSize(new Dimension(50, 20));
 
-        DecimalFormat priceFormat = new DecimalFormat("0.##");
-        JFormattedTextField toppingPriceField = new JFormattedTextField(priceFormat);
+        final DecimalFormat priceFormat = new DecimalFormat("0.##");
+        final JFormattedTextField toppingPriceField = new JFormattedTextField(priceFormat);
         toppingPriceField.setPreferredSize(new Dimension(50, 20));
-        JFormattedTextField doughPriceField = new JFormattedTextField(priceFormat);
+        final JFormattedTextField doughPriceField = new JFormattedTextField(priceFormat);
         doughPriceField.setPreferredSize(new Dimension(50, 20));
-        JFormattedTextField saucePriceField = new JFormattedTextField(priceFormat);
+        final JFormattedTextField saucePriceField = new JFormattedTextField(priceFormat);
         saucePriceField.setPreferredSize(new Dimension(50, 20));
 
-        JButton addNewToppingButton = new JButton(ADD_TOPPING_BUTTON);
-        JButton addNewDoughButton = new JButton(ADD_DOUGH_BUTTON);
-        JButton addNewSauceButton = new JButton(ADD_SAUCE_BUTTON);
-        JButton saveAllButton = new JButton(SAVE_ALL);
+        final JButton addNewToppingButton = new JButton(ADD_TOPPING_BUTTON);
+        final JButton addNewDoughButton = new JButton(ADD_DOUGH_BUTTON);
+        final JButton addNewSauceButton = new JButton(ADD_SAUCE_BUTTON);
+        final JButton saveAllButton = new JButton(SAVE_ALL);
 
-        Vector<String> editToppingNames = new Vector<String>();
+        final Vector<String> editToppingNames = new Vector<String>();
         editToppingNames.add(TOPPING);
         editToppingNames.add(PRICE_IN_E);
         editToppingNames.add(VISIBLE);
-        PizzaIngredientTable<Topping> editToppingTable = new PizzaIngredientTable<Topping>(editToppingNames, toppingList, true);
-        Vector<String> editDoughNames = new Vector<String>();
+        final PizzaIngredientTable<Topping> editToppingTable = new PizzaIngredientTable<Topping>(editToppingNames,
+                        toppingList, true);
+        final Vector<String> editDoughNames = new Vector<String>();
         editDoughNames.add(DOUGH);
         editDoughNames.add(PRICE_IN_E);
         editDoughNames.add(VISIBLE);
-        PizzaIngredientTable<Dough> editDoughTable = new PizzaIngredientTable<Dough>(editDoughNames, doughList, true);
-        Vector<String> editSauceNames = new Vector<String>();
+        final PizzaIngredientTable<Dough> editDoughTable = new PizzaIngredientTable<Dough>(editDoughNames, doughList,
+                        true);
+        final Vector<String> editSauceNames = new Vector<String>();
         editSauceNames.add(SAUCE);
         editSauceNames.add(PRICE_IN_E);
         editSauceNames.add(VISIBLE);
-        PizzaIngredientTable<Sauce> editSauceTable = new PizzaIngredientTable<Sauce>(editSauceNames, sauceList, true);
+        final PizzaIngredientTable<Sauce> editSauceTable = new PizzaIngredientTable<Sauce>(editSauceNames, sauceList,
+                        true);
 
         panelIngredients.add(newToppingLabel);
         panelIngredients.add(toppingNameField);
@@ -192,12 +194,12 @@ public class GraphicalUserInterface extends AbstractUserInterface implements Use
         panelIngredients.add(saveAllButton);
         // Pizza ingredient editing tab end
 
-        JTabbedPane tabs = new JTabbedPane(JTabbedPane.TOP);
+        final JTabbedPane tabs = new JTabbedPane(JTabbedPane.TOP);
         tabs.add(EDIT_INGRIDIENTS_TAB, panelIngredients);
         tabs.add(CREATE_PIZZA_TAB, panelPizza);
 
-        JFrame mainFrame = new JFrame(MAIN_FRAME_NAME);
-        mainFrame.setSize(800,500);
+        final JFrame mainFrame = new JFrame(MAIN_FRAME_NAME);
+        mainFrame.setSize(800, 500);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setResizable(false);
         mainFrame.setLocationRelativeTo(null);
@@ -207,17 +209,15 @@ public class GraphicalUserInterface extends AbstractUserInterface implements Use
 
         // Listener
         mainFrame.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosing(final WindowEvent e) {
-                    System.exit(0);
-                }
+            @Override
+            public void windowClosing(final WindowEvent e) {
+                System.exit(0);
             }
-        );
+        });
 
         addToppingButton.addActionListener(new AddToppingListener(toppingComboBox, toppingTable));
-        GetListListener getListener = new GetListListener(toppingTable, sizeComboBox,
-                doughComboBox, sauceComboBox,
-                mainFrame, counterSpinner);
+        final GetListListener getListener = new GetListListener(toppingTable, sizeComboBox, doughComboBox,
+                        sauceComboBox, mainFrame, counterSpinner);
         createPizzaButton.addActionListener(getListener);
     }
 
@@ -227,15 +227,14 @@ public class GraphicalUserInterface extends AbstractUserInterface implements Use
     }
 
     /**
-     * @author admin
-     * simple action listener to add toppings to topping list
+     * @author admin simple action listener to add toppings to topping list
      */
     private class AddToppingListener implements ActionListener {
         private final PizzaComboBox<Topping> toppingComboBox;
         private final PizzaIngredientTable<Topping> toppingTable;
 
         public AddToppingListener(final PizzaComboBox<Topping> toppingComboBox,
-                                    final PizzaIngredientTable<Topping> toppingTable) {
+                        final PizzaIngredientTable<Topping> toppingTable) {
             super();
             this.toppingComboBox = toppingComboBox;
             this.toppingTable = toppingTable;
@@ -249,8 +248,8 @@ public class GraphicalUserInterface extends AbstractUserInterface implements Use
     }
 
     /**
-     * @author admin
-     * simple action listener to create pizza from checkboxes and topping lists
+     * @author admin simple action listener to create pizza from checkboxes and
+     *         topping lists
      */
     private class GetListListener implements ActionListener {
         private final PizzaIngredientTable<Topping> toppingTable;
@@ -261,11 +260,8 @@ public class GraphicalUserInterface extends AbstractUserInterface implements Use
         private final JSpinner counterSpinner;
 
         public GetListListener(final PizzaIngredientTable<Topping> toppingTable,
-                final PizzaComboBox<Size> sizeComboBox,
-                final PizzaComboBox<Dough> doughComboBox,
-                final PizzaComboBox<Sauce> sauceComboBox,
-                final JFrame mainFrame,
-                final JSpinner counterSpinner) {
+                        final PizzaComboBox<Size> sizeComboBox, final PizzaComboBox<Dough> doughComboBox,
+                        final PizzaComboBox<Sauce> sauceComboBox, final JFrame mainFrame, final JSpinner counterSpinner) {
             this.toppingTable = toppingTable;
             this.sizeComboBox = sizeComboBox;
             this.doughComboBox = doughComboBox;
@@ -276,15 +272,17 @@ public class GraphicalUserInterface extends AbstractUserInterface implements Use
 
         @Override
         public void actionPerformed(final ActionEvent e) {
-            List<Topping> toppings = toppingTable.getCheckedIngredients();
-            Size size = sizeComboBox.getSelectedProperty();
-            Dough dough = doughComboBox.getSelectedProperty();
-            Sauce sauce = sauceComboBox.getSelectedProperty();
-            int pizzaCount = ((Integer) counterSpinner.getValue()).intValue();
-            LOG.debug("current pizza properties: count={} size={} dough={} sauce={} toppings={}", new Object[]{pizzaCount, size, dough, sauce, toppings});
-            Pizza pizza = getLogic().createPizza(size, dough, sauce, toppings);
+            final List<Topping> toppings = toppingTable.getCheckedIngredients();
+            final Size size = sizeComboBox.getSelectedProperty();
+            final Dough dough = doughComboBox.getSelectedProperty();
+            final Sauce sauce = sauceComboBox.getSelectedProperty();
+            final int pizzaCount = ((Integer) counterSpinner.getValue()).intValue();
+            LOG.debug("current pizza properties: count={} size={} dough={} sauce={} toppings={}", new Object[] {
+                            pizzaCount, size, dough, sauce, toppings });
+            final Pizza pizza = getLogic().createPizza(size, dough, sauce, toppings);
             LOG.debug("generated pizza: {}", pizza);
-            String message = String.format(RESULT_MESSAGE, pizzaCount, pizzaCount*pizza.getTotalPrice()/100.0);
+            final String message = String
+                            .format(RESULT_MESSAGE, pizzaCount, pizzaCount * pizza.getTotalPrice() / 100.0);
             JOptionPane.showMessageDialog(mainFrame, message, BILL_TITLE, JOptionPane.INFORMATION_MESSAGE);
         }
     }

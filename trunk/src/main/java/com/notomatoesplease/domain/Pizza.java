@@ -2,6 +2,8 @@ package com.notomatoesplease.domain;
 
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
 public class Pizza {
 
     private Size size;
@@ -22,7 +24,7 @@ public class Pizza {
     }
 
     public void setToppings(final List<Topping> toppings) {
-        this.toppings = toppings;
+        this.toppings = Lists.newArrayList(toppings);
     }
 
     public Size getSize() {
