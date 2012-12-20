@@ -7,10 +7,9 @@ import org.slf4j.LoggerFactory;
 
 import com.notomatoesplease.logic.Logic;
 import com.notomatoesplease.userinterface.AbstractUserInterface;
-import com.notomatoesplease.userinterface.UserInterface;
 import com.notomatoesplease.userinterface.tui.widget.ApplicationWindow;
 
-public class TextUserInterface extends AbstractUserInterface implements UserInterface {
+public class TextUserInterface extends AbstractUserInterface {
 
     private static final Logger LOG = LoggerFactory.getLogger(TextUserInterface.class);
 
