@@ -10,13 +10,37 @@ http://dia-installer.de/
 sequenzdiagram
 http://www.visual-paradigm.com
 
-fluent interface
-Fowler, Martin: Artikel „FluentInterface“ vom 20. Dezember 2005. http://martinfowler.com/bliki/FluentInterface.html (abgerufen am 16. Dezember 2012).
-Schiffer, Bernd: Artikel „Flexibel programmieren mit dem Fluent Interface - Flüssiger Erbauer“ vom 04. November 2008. http://www.heise.de/developer/artikel/Flexibel-programmieren-mit-dem-Fluent-Interface-227052.html (abgerufen am 20. Dezember 2012)
+repository
+http://code.google.com/p/no-tomatoes-please
+
+
+
 
 json
 Offizielle JSON-Seite: http://json.org/ (abgerufen am 20. Dezember 2012)
 Projekt-Seite von GSON: http://code.google.com/p/google-gson/ (abgerufen am 20. Dezember 2012)
 
 jcurses
-Projekt-Seite von JCurses: http://sourceforge.net/projects/javacurses/ (abgerufen am 20. Dezember 2012)
+Projekt-Seite von JCurses. http://sourceforge.net/projects/javacurses/ (abgerufen am 20. Dezember 2012)
+
+
+
+
+1
+en.wikipedia.org: Three-tier architecture. http://en.wikipedia.org/wiki/Multitier_architecture#Three-tier_architecture (abgerufen am 18. Dezember 2012)
+2
+Manfred Rätzmann, Three-Tier-Development. http://www.dfpug.de/konf/konf_1998/09_tier/d_tier/d_tier.htm (abgerufen am 18. Dezember 2012)
+2
+Fowler, Martin: Artikel „FluentInterface“ vom 20. Dezember 2005. http://martinfowler.com/bliki/FluentInterface.html (abgerufen am 16. Dezember 2012)
+3
+Schiffer, Bernd: Artikel „Flexibel programmieren mit dem Fluent Interface - Flüssiger Erbauer“ vom 04. November 2008. http://www.heise.de/developer/artikel/Flexibel-programmieren-mit-dem-Fluent-Interface-227052.html (abgerufen am 20. Dezember 2012)
+4
+Projekt-Seite von JCurses. http://sourceforge.net/projects/javacurses/ (abgerufen am 20. Dezember 2012)
+5
+Projekt-Seite der H2-Datenbank. http://www.h2database.com (abgerufen am 16. Dezember 2012)
+6
+Projekt-Seite von JSON-Seite. http://json.org/ (abgerufen am 10. November 2012)
+7
+Projekt-Seite GSON-Bibliothek. http://code.google.com/p/google-gson/  (abgerufen am 10. November 2012)
+8
+Körner, Heiko Prof. Dr.: Skript zur Vorlesung Theoretische Informatik I/II an der Hochschule Karlsruhe vom Oktober 2007, Kapitel 2.1 „Grammatiken und die Chomsky–Hierarchie“, Seite 27 ff. sowie Kapitel 2.2 „Endliche Automaten“, Seite 34 ff.
