@@ -3,8 +3,6 @@ package com.notomatoesplease.userinterface.gui;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Vector;
@@ -19,6 +17,8 @@ import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +30,9 @@ import com.notomatoesplease.domain.Size;
 import com.notomatoesplease.domain.Topping;
 import com.notomatoesplease.logic.Logic;
 import com.notomatoesplease.userinterface.AbstractUserInterface;
-import com.notomatoesplease.userinterface.gui.widget.PizzaComboBox;
+import com.notomatoesplease.userinterface.gui.widget.PizzaIngredientComboBox;
 import com.notomatoesplease.userinterface.gui.widget.PizzaIngredientTable;
+import com.notomatoesplease.userinterface.gui.widget.PizzaPropertyComboBox;
 
 public class GraphicalUserInterface extends AbstractUserInterface {
 
@@ -56,12 +57,13 @@ public class GraphicalUserInterface extends AbstractUserInterface {
     private static final String ADDED_TOPPINGS = "Bereits vorhandene Beläge:";
     private static final String ADDED_DOUGHS = "Bereits vorhandene Teige:";
     private static final String ADDED_SAUCES = "Bereits vorhandene Soßen:";
-    private static final String TOTAL_PRICE = "Gesamtpreis in Euro";
+    private static final String TOTAL_PRICE = "Gesamtpreis in Euro:";
     private static final String NEW_DOUGH = "Neuer Teig:";
     private static final String NEW_SAUCE = "Neuer Soße:";
     private static final String NEW_TOPPING = "Neuer Belag:";
-    private static final String SAVE_ALL = "Zutaten speichern";
     private static final String VISIBLE = "Ist sichtbar";
+    private static final int WINDOW_WIDTH = 960;
+    private static final int WINDOW_HEIGHT = 520;
 
     public GraphicalUserInterface(final Logic logic) {
         super(logic);
@@ -82,16 +84,23 @@ public class GraphicalUserInterface extends AbstractUserInterface {
         final JLabel countLabel = new JLabel(COUNT);
         final JLabel addedToppingsLabel = new JLabel(ADDED_TOPPINGS);
         final JLabel totalPriceLabel = new JLabel(TOTAL_PRICE);
-        final PizzaComboBox<Size> sizeComboBox = new PizzaComboBox<Size>(sizeList);
-        final PizzaComboBox<Dough> doughComboBox = new PizzaComboBox<Dough>(doughList);
-        final PizzaComboBox<Sauce> sauceComboBox = new PizzaComboBox<Sauce>(sauceList);
-        final PizzaComboBox<Topping> toppingComboBox = new PizzaComboBox<Topping>(toppingList);
+        final PizzaPropertyComboBox<Size> sizeComboBox = new PizzaPropertyComboBox<Size>(sizeList);
+        final PizzaIngredientComboBox<Dough> doughComboBox = new PizzaIngredientComboBox<Dough>(doughList);
+        final PizzaIngredientComboBox<Sauce> sauceComboBox = new PizzaIngredientComboBox<Sauce>(sauceList);
+        final PizzaIngredientComboBox<Topping> toppingComboBox = new PizzaIngredientComboBox<Topping>(toppingList);
         final JButton addToppingButton = new JButton(ADD_TOPPING_BUTTON);
         final JButton createPizzaButton = new JButton(CREATE_PIZZA_BUTTON);
         final SpinnerNumberModel counterSpinnerModel = new SpinnerNumberModel(1, 1, 100, 1);
         final JSpinner counterSpinner = new JSpinner(counterSpinnerModel);
+        final JTextField totalPriceField = new JTextField();
+        totalPriceField.setPreferredSize(new Dimension(50, 20));
+        totalPriceField.setEditable(false);
 
-        final JPanel panelIngredients = new JPanel();
+        final Vector<String> names = new Vector<String>();
+        names.add(TOPPING);
+        names.add(PRICE_IN_E);
+        names.add(SELECTED_COL);
+        final PizzaIngredientTable<Topping> toppingTable = new PizzaIngredientTable<Topping>(names);
 
         final JPanel panelPizza = new JPanel();
         panelPizza.add(sizeLabel);
@@ -106,14 +115,9 @@ public class GraphicalUserInterface extends AbstractUserInterface {
         panelPizza.add(countLabel);
         panelPizza.add(counterSpinner);
         panelPizza.add(totalPriceLabel);
+        panelPizza.add(totalPriceField);
         panelPizza.add(createPizzaButton);
         panelPizza.add(addedToppingsLabel);
-
-        final Vector<String> names = new Vector<String>();
-        names.add(TOPPING);
-        names.add(PRICE_IN_E);
-        names.add(SELECTED_COL);
-        final PizzaIngredientTable<Topping> toppingTable = new PizzaIngredientTable<Topping>(names, false);
         panelPizza.add(toppingTable.getPaneWithTable());
         // Pizza creation tab end
 
@@ -145,26 +149,25 @@ public class GraphicalUserInterface extends AbstractUserInterface {
         final JButton addNewToppingButton = new JButton(ADD_TOPPING_BUTTON);
         final JButton addNewDoughButton = new JButton(ADD_DOUGH_BUTTON);
         final JButton addNewSauceButton = new JButton(ADD_SAUCE_BUTTON);
-        final JButton saveAllButton = new JButton(SAVE_ALL);
 
         final Vector<String> editToppingNames = new Vector<String>();
         editToppingNames.add(TOPPING);
         editToppingNames.add(PRICE_IN_E);
         editToppingNames.add(VISIBLE);
         final PizzaIngredientTable<Topping> editToppingTable = new PizzaIngredientTable<Topping>(editToppingNames,
-                        toppingList, true);
+                        toppingList);
         final Vector<String> editDoughNames = new Vector<String>();
         editDoughNames.add(DOUGH);
         editDoughNames.add(PRICE_IN_E);
         editDoughNames.add(VISIBLE);
-        final PizzaIngredientTable<Dough> editDoughTable = new PizzaIngredientTable<Dough>(editDoughNames, doughList,
-                        true);
+        final PizzaIngredientTable<Dough> editDoughTable = new PizzaIngredientTable<Dough>(editDoughNames, doughList);
         final Vector<String> editSauceNames = new Vector<String>();
         editSauceNames.add(SAUCE);
         editSauceNames.add(PRICE_IN_E);
         editSauceNames.add(VISIBLE);
-        final PizzaIngredientTable<Sauce> editSauceTable = new PizzaIngredientTable<Sauce>(editSauceNames, sauceList,
-                        true);
+        final PizzaIngredientTable<Sauce> editSauceTable = new PizzaIngredientTable<Sauce>(editSauceNames, sauceList);
+
+        final JPanel panelIngredients = new JPanel();
 
         panelIngredients.add(newToppingLabel);
         panelIngredients.add(toppingNameField);
@@ -190,8 +193,6 @@ public class GraphicalUserInterface extends AbstractUserInterface {
         panelIngredients.add(editToppingTable.getPaneWithTable());
         panelIngredients.add(editDoughTable.getPaneWithTable());
         panelIngredients.add(editSauceTable.getPaneWithTable());
-
-        panelIngredients.add(saveAllButton);
         // Pizza ingredient editing tab end
 
         final JTabbedPane tabs = new JTabbedPane(JTabbedPane.TOP);
@@ -199,7 +200,7 @@ public class GraphicalUserInterface extends AbstractUserInterface {
         tabs.add(CREATE_PIZZA_TAB, panelPizza);
 
         final JFrame mainFrame = new JFrame(MAIN_FRAME_NAME);
-        mainFrame.setSize(800, 500);
+        mainFrame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setResizable(false);
         mainFrame.setLocationRelativeTo(null);
@@ -207,11 +208,35 @@ public class GraphicalUserInterface extends AbstractUserInterface {
 
         mainFrame.add(tabs);
 
-        // Listener
-        mainFrame.addWindowListener(new WindowAdapter() {
+        //init total price
+        totalPriceField.setText(String.format("%.2f€", calculateTotalPrice(toppingTable, sizeComboBox, doughComboBox, sauceComboBox, counterSpinner)));
+
+        // create pizza pane listener
+        addToppingButton.addActionListener(new ActionListener() {
             @Override
-            public void windowClosing(final WindowEvent e) {
-                System.exit(0);
+            public void actionPerformed(final ActionEvent e) {
+                totalPriceField.setText(String.format("%.2f€", calculateTotalPrice(toppingTable, sizeComboBox, doughComboBox, sauceComboBox, counterSpinner)));
+            }
+        });
+
+        sizeComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                totalPriceField.setText(String.format("%.2f€", calculateTotalPrice(toppingTable, sizeComboBox, doughComboBox, sauceComboBox, counterSpinner)));
+            }
+        });
+
+        doughComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                totalPriceField.setText(String.format("%.2f€", calculateTotalPrice(toppingTable, sizeComboBox, doughComboBox, sauceComboBox, counterSpinner)));
+            }
+        });
+
+        sauceComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                totalPriceField.setText(String.format("%.2f€", calculateTotalPrice(toppingTable, sizeComboBox, doughComboBox, sauceComboBox, counterSpinner)));
             }
         });
 
@@ -219,7 +244,123 @@ public class GraphicalUserInterface extends AbstractUserInterface {
         final GetListListener getListener = new GetListListener(toppingTable, sizeComboBox, doughComboBox,
                         sauceComboBox, mainFrame, counterSpinner);
         createPizzaButton.addActionListener(getListener);
+
+        toppingTable.addCellEditorListener(new CellEditorListener() {
+            @Override
+            public void editingStopped(final ChangeEvent e) {
+                totalPriceField.setText(String.format("%.2f€", calculateTotalPrice(toppingTable, sizeComboBox, doughComboBox, sauceComboBox, counterSpinner)));
+            }
+
+            @Override
+            public void editingCanceled(final ChangeEvent e) {
+            }
+        });
+
+        // ingredient pane listener
+        addNewSauceButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent arg0) {
+                if (saucePriceField.getValue() != null && sauceNameField.getText().length() > 0) {
+                    Sauce sauce = new Sauce();
+                    sauce.setName(sauceNameField.getText());
+                    sauce.setPrice((int) (((Number) saucePriceField.getValue()).doubleValue() * 100.0));
+                    sauce.setVisible(true);
+                    sauceComboBox.addIngredient(sauce);
+                    editSauceTable.addIngredient(sauce);
+                    sauceList.add(sauce);
+                    getLogic().saveSauces(sauceList);
+                }
+            }
+        });
+
+        addNewToppingButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent arg0) {
+                if (toppingPriceField.getValue() != null && toppingNameField.getText().length() > 0) {
+                    Topping topping = new Topping();
+                    topping.setName(toppingNameField.getText());
+                    topping.setPrice((int) (((Number) toppingPriceField.getValue()).doubleValue() * 100.0));
+                    topping.setVisible(true);
+                    toppingComboBox.addIngredient(topping);
+                    editToppingTable.addIngredient(topping);
+                    toppingList.add(topping);
+                    getLogic().saveToppings(toppingList);
+                }
+            }
+        });
+
+        addNewDoughButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent arg0) {
+                if (doughPriceField.getValue() != null && doughNameField.getText().length() > 0) {
+                    Dough dough = new Dough();
+                    dough.setName(doughNameField.getText());
+                    dough.setPrice((int) (((Number) doughPriceField.getValue()).doubleValue() * 100.0));
+                    dough.setVisible(true);
+                    doughComboBox.addIngredient(dough);
+                    editDoughTable.addIngredient(dough);
+                    doughList.add(dough);
+                    getLogic().saveDoughs(doughList);
+                }
+            }
+        });
+
+        editDoughTable.addCellEditorListener(new CellEditorListener() {
+            @Override
+            public void editingStopped(final ChangeEvent e) {
+                doughList.clear();
+                doughList.addAll(editDoughTable.getAllIngredients());
+                getLogic().saveDoughs(doughList);
+                doughComboBox.setIngredientList(doughList);
+            }
+
+            @Override
+            public void editingCanceled(final ChangeEvent e) {
+            }
+        });
+
+        editSauceTable.addCellEditorListener(new CellEditorListener() {
+            @Override
+            public void editingStopped(final ChangeEvent e) {
+                sauceList.clear();
+                sauceList.addAll(editSauceTable.getAllIngredients());
+                getLogic().saveSauces(sauceList);
+                sauceComboBox.setIngredientList(sauceList);
+            }
+
+            @Override
+            public void editingCanceled(final ChangeEvent e) {
+            }
+        });
+
+        editToppingTable.addCellEditorListener(new CellEditorListener() {
+            @Override
+            public void editingStopped(final ChangeEvent e) {
+                toppingList.clear();
+                toppingList.addAll(editToppingTable.getAllIngredients());
+                getLogic().saveToppings(toppingList);
+                toppingComboBox.setIngredientList(toppingList);
+            }
+
+            @Override
+            public void editingCanceled(final ChangeEvent e) {
+            }
+        });
     }
+
+
+    private final double  calculateTotalPrice(final PizzaIngredientTable<Topping> toppingTable,
+            final PizzaPropertyComboBox<Size> sizeComboBox, final PizzaIngredientComboBox<Dough> doughComboBox,
+            final PizzaIngredientComboBox<Sauce> sauceComboBox, final JSpinner counterSpinner) {
+        final List<Topping> toppings = toppingTable.getCheckedIngredients();
+        final Size size = sizeComboBox.getSelectedProperty();
+        final Dough dough = doughComboBox.getSelectedIngredient();
+        final Sauce sauce = sauceComboBox.getSelectedIngredient();
+        final int pizzaCount = ((Integer) counterSpinner.getValue()).intValue();
+        final Pizza pizza = getLogic().createPizza(size, dough, sauce, toppings);
+        return pizza.getTotalPrice() * pizzaCount / 100.0;
+    }
+
 
     @Override
     public void run() {
@@ -230,10 +371,10 @@ public class GraphicalUserInterface extends AbstractUserInterface {
      * @author admin simple action listener to add toppings to topping list
      */
     private class AddToppingListener implements ActionListener {
-        private final PizzaComboBox<Topping> toppingComboBox;
+        private final PizzaIngredientComboBox<Topping> toppingComboBox;
         private final PizzaIngredientTable<Topping> toppingTable;
 
-        public AddToppingListener(final PizzaComboBox<Topping> toppingComboBox,
+        public AddToppingListener(final PizzaIngredientComboBox<Topping> toppingComboBox,
                         final PizzaIngredientTable<Topping> toppingTable) {
             super();
             this.toppingComboBox = toppingComboBox;
@@ -242,8 +383,8 @@ public class GraphicalUserInterface extends AbstractUserInterface {
 
         @Override
         public void actionPerformed(final ActionEvent e) {
-            LOG.debug("add toppping to pizza: {}", toppingComboBox.getSelectedProperty().toString());
-            toppingTable.addIngredient(toppingComboBox.getSelectedProperty());
+            LOG.debug("add toppping to pizza: {}", toppingComboBox.getSelectedIngredient().toString());
+            toppingTable.addIngredient(toppingComboBox.getSelectedIngredient());
         }
     }
 
@@ -253,15 +394,15 @@ public class GraphicalUserInterface extends AbstractUserInterface {
      */
     private class GetListListener implements ActionListener {
         private final PizzaIngredientTable<Topping> toppingTable;
-        private final PizzaComboBox<Size> sizeComboBox;
-        private final PizzaComboBox<Dough> doughComboBox;
-        private final PizzaComboBox<Sauce> sauceComboBox;
+        private final PizzaPropertyComboBox<Size> sizeComboBox;
+        private final PizzaIngredientComboBox<Dough> doughComboBox;
+        private final PizzaIngredientComboBox<Sauce> sauceComboBox;
         private final JFrame mainFrame;
         private final JSpinner counterSpinner;
 
         public GetListListener(final PizzaIngredientTable<Topping> toppingTable,
-                        final PizzaComboBox<Size> sizeComboBox, final PizzaComboBox<Dough> doughComboBox,
-                        final PizzaComboBox<Sauce> sauceComboBox, final JFrame mainFrame, final JSpinner counterSpinner) {
+                        final PizzaPropertyComboBox<Size> sizeComboBox, final PizzaIngredientComboBox<Dough> doughComboBox,
+                        final PizzaIngredientComboBox<Sauce> sauceComboBox, final JFrame mainFrame, final JSpinner counterSpinner) {
             this.toppingTable = toppingTable;
             this.sizeComboBox = sizeComboBox;
             this.doughComboBox = doughComboBox;
@@ -274,15 +415,14 @@ public class GraphicalUserInterface extends AbstractUserInterface {
         public void actionPerformed(final ActionEvent e) {
             final List<Topping> toppings = toppingTable.getCheckedIngredients();
             final Size size = sizeComboBox.getSelectedProperty();
-            final Dough dough = doughComboBox.getSelectedProperty();
-            final Sauce sauce = sauceComboBox.getSelectedProperty();
+            final Dough dough = doughComboBox.getSelectedIngredient();
+            final Sauce sauce = sauceComboBox.getSelectedIngredient();
             final int pizzaCount = ((Integer) counterSpinner.getValue()).intValue();
-            LOG.debug("current pizza properties: count={} size={} dough={} sauce={} toppings={}", new Object[] {
-                            pizzaCount, size, dough, sauce, toppings });
+            LOG.debug("current pizza properties: count={} size={} dough={} sauce={} toppings={}",
+                    new Object[] {pizzaCount, size, dough, sauce, toppings });
             final Pizza pizza = getLogic().createPizza(size, dough, sauce, toppings);
             LOG.debug("generated pizza: {}", pizza);
-            final String message = String
-                            .format(RESULT_MESSAGE, pizzaCount, pizzaCount * pizza.getTotalPrice() / 100.0);
+            final String message = String.format(RESULT_MESSAGE, pizzaCount, pizzaCount * pizza.getTotalPrice() / 100.0);
             JOptionPane.showMessageDialog(mainFrame, message, BILL_TITLE, JOptionPane.INFORMATION_MESSAGE);
         }
     }

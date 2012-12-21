@@ -20,6 +20,7 @@ public class PizzaUtil<T extends Ingredient> {
     public static final PizzaUtil<Dough> DOUGH_UTIL = new PizzaUtil<Dough>();
 
     private final Function<T, String> GET_NAME_FUNCTION = new Function<T, String>() {
+        @Override
         public String apply(final T from) {
             return from.getName();
         }
@@ -36,7 +37,7 @@ public class PizzaUtil<T extends Ingredient> {
 
     /**
      * Sorts given items by name and returns a sorted immutable set.
-     * 
+     *
      * @param items
      *            - list of items that need to be sorted
      * @return immutable, sorted set of the given items
@@ -47,7 +48,7 @@ public class PizzaUtil<T extends Ingredient> {
 
     /**
      * Returns a list of item names.
-     * 
+     *
      * @param items
      * @return list of item names
      */

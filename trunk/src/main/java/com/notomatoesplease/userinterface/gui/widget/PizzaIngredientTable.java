@@ -61,8 +61,8 @@ public class PizzaIngredientTable<T extends Ingredient> {
      * @param columnNames
      * @param showInvisible
      */
-    public PizzaIngredientTable(final Vector<String> columnNames, final boolean showInvisible) {
-        this(columnNames, new Vector<T>(), showInvisible);
+    public PizzaIngredientTable(final Vector<String> columnNames) {
+        this(columnNames, new Vector<T>());
     }
 
     /**
@@ -70,15 +70,9 @@ public class PizzaIngredientTable<T extends Ingredient> {
      * @param ingredients
      * @param showInvisible
      */
-    public PizzaIngredientTable(final Vector<String> columnNames, final List<T> ingredients, final boolean showInvisible) {
+    public PizzaIngredientTable(final Vector<String> columnNames, final List<T> ingredients) {
         Vector<Object> tableData = new Vector<Object>();
-
-        if (showInvisible) {
-            this.ingredients = Lists.newArrayList(ingredients);
-        }
-        else {
-            this.ingredients = Lists.newArrayList(Iterables.filter(ingredients, predicate));
-        }
+        this.ingredients = Lists.newArrayList(ingredients);
 
         for (T ingredient : this.ingredients) {
             Vector<Object> dataRow = new Vector<Object>();
@@ -97,6 +91,7 @@ public class PizzaIngredientTable<T extends Ingredient> {
         table = new JTable(dm);
         rowEditor = new EachRowEditor(table);
 
+
         for (int i = 0; i < this.ingredients.size(); i++) {
             rowRenderer.add(i, checkBoxRenderer);
             rowEditor.setEditorAt(i, checkBoxEditor);
@@ -106,7 +101,15 @@ public class PizzaIngredientTable<T extends Ingredient> {
         table.getColumn(columnNames.get(2)).setCellEditor(rowEditor);
 
         scrollPane = new JScrollPane(table);
-        scrollPane.setPreferredSize(new Dimension(200, 200));
+        scrollPane.setPreferredSize(new Dimension(240, 200));
+    }
+
+    /**
+     * @param cellEditorListener
+     */
+    public void addCellEditorListener(final CellEditorListener cellEditorListener) {
+        Preconditions.checkNotNull(cellEditorListener);
+        checkBoxEditor.addCellEditorListener(cellEditorListener);
     }
 
     /**

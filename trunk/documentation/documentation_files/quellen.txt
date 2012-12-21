@@ -1,0 +1,22 @@
+3 tier grafik
+http://de.wikipedia.org/w/index.php?title=Datei:3-Tier.jpg&filetimestamp=20070917103211
+
+teig fotos
+http://www.youtube.com/watch?v=MjuiazBz5Eo
+
+klassendiagram, er-diagram
+http://dia-installer.de/
+
+sequenzdiagram
+http://www.visual-paradigm.com
+
+fluent interface
+Fowler, Martin: Artikel „FluentInterface“ vom 20. Dezember 2005. http://martinfowler.com/bliki/FluentInterface.html (abgerufen am 16. Dezember 2012).
+Schiffer, Bernd: Artikel „Flexibel programmieren mit dem Fluent Interface - Flüssiger Erbauer“ vom 04. November 2008. http://www.heise.de/developer/artikel/Flexibel-programmieren-mit-dem-Fluent-Interface-227052.html (abgerufen am 20. Dezember 2012)
+
+json
+Offizielle JSON-Seite: http://json.org/ (abgerufen am 20. Dezember 2012)
+Projekt-Seite von GSON: http://code.google.com/p/google-gson/ (abgerufen am 20. Dezember 2012)
+
+jcurses
+Projekt-Seite von JCurses: http://sourceforge.net/projects/javacurses/ (abgerufen am 20. Dezember 2012)
