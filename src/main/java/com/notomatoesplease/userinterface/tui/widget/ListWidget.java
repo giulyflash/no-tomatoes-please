@@ -12,6 +12,9 @@ import com.notomatoesplease.domain.PizzaProperty;
 
 public class ListWidget<T extends PizzaProperty> extends List {
 
+    private static final String SPACE = " ";
+    private static final String DASH = " - ";
+
     private final java.util.List<T> elements = Lists.newArrayList();
 
     private CharColor highlightColor = WidgetUtil.HIGHLIGHTED_COLOR;
@@ -93,18 +96,18 @@ public class ListWidget<T extends PizzaProperty> extends List {
 
     private String propertyToString(final T item) {
         final StringBuilder sb = new StringBuilder(item.getName());
-        sb.append(" - ");
+        sb.append(DASH);
         sb.append(String.format(WidgetUtil.CURRENCY_FORMAT, Double.valueOf((double) item.getPrice() / (double) 100)));
         return sb.toString();
     }
 
     private String propertyToString(final T item, final int maxWidth) {
         final StringBuilder sb = new StringBuilder(item.getName());
-        sb.append(" - ");
+        sb.append(DASH);
         sb.append(String.format(WidgetUtil.CURRENCY_FORMAT, Double.valueOf((double) item.getPrice() / (double) 100)));
 
         while (sb.length() < maxWidth) {
-            sb.append(" ");
+            sb.append(SPACE);
         }
         return sb.toString();
     }

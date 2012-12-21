@@ -13,6 +13,9 @@ public class TextUserInterface extends AbstractUserInterface {
 
     private static final Logger LOG = LoggerFactory.getLogger(TextUserInterface.class);
 
+    private static final int APPLICATION_HEIGHT = 50;
+    private static final int APPLICATION_WIDTH = 150;
+
     public TextUserInterface(final Logic logic) {
         super(logic);
         LOG.debug("using text mode user interface");
@@ -20,7 +23,7 @@ public class TextUserInterface extends AbstractUserInterface {
 
     @Override
     public void run() {
-        final Window applicationWindow = new ApplicationWindow(getLogic(), 150, 50);
+        final Window applicationWindow = new ApplicationWindow(getLogic(), APPLICATION_WIDTH, APPLICATION_HEIGHT);
         applicationWindow.show();
     }
 

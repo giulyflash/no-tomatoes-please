@@ -7,13 +7,14 @@ import javax.swing.JComboBox;
 import com.google.common.collect.Lists;
 import com.notomatoesplease.domain.Ingredient;
 
-@SuppressWarnings("serial")
 public final class PizzaIngredientComboBox<T extends Ingredient> extends JComboBox<String> {
 
+    private static final long serialVersionUID = -870096608460863910L;
     private final List<T> ingredients = Lists.newArrayList();
 
     /**
      * JComboBox with a list of pizza ingredients
+     * 
      * @param ingredients
      */
     public PizzaIngredientComboBox(final List<T> ingredients) {
@@ -47,7 +48,6 @@ public final class PizzaIngredientComboBox<T extends Ingredient> extends JComboB
             }
         }
     }
-
 
     /**
      * @param property
