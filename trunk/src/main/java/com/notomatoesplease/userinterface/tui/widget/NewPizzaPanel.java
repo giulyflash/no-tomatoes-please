@@ -41,6 +41,7 @@ public final class NewPizzaPanel {
     private static final String TOTAL_PRICE_BTN = "Pizza abschließen";
     private static final String TOTAL_PRICE = "Gesamtpreis: ";
     private static final String TOTAL_PRICE_MSG_BOX_TITLE = "Rechnung";
+    private static final String SEPARATOR = ", ";
 
     private static ListWidget<Size> sizeList = null;
     private static ListWidget<Dough> doughList = null;
@@ -127,29 +128,17 @@ public final class NewPizzaPanel {
                 }
 
                 final Double totalPrice = Double.valueOf((double) (pizza.getTotalPrice() * quantity) / 100);
-                messageBoxText.append(TOTAL_PRICE);
-                messageBoxText.append(String.format(WidgetUtil.CURRENCY_FORMAT, totalPrice));
-                messageBoxText.append(NEW_LINE);
-                messageBoxText.append(MSG_BOX_QUANTITY_LABEL);
-                messageBoxText.append(quantity);
-                messageBoxText.append(NEW_LINE);
-                messageBoxText.append(MSG_BOX_SIZE_LABEL);
-                messageBoxText.append(pizza.getSize().getName());
-                messageBoxText.append(NEW_LINE);
-                messageBoxText.append(MSG_BOX_DOUGH_LABEL);
-                messageBoxText.append(pizza.getDough().getName());
-                messageBoxText.append(NEW_LINE);
-                messageBoxText.append(MSG_BOX_SAUCE_LABEL);
-
-                messageBoxText.append(pizza.getSauce().getName());
-
-                messageBoxText.append(NEW_LINE);
-                messageBoxText.append(MSG_BOX_TOPPINGS_LABEL);
+                messageBoxText.append(TOTAL_PRICE).append(String.format(WidgetUtil.CURRENCY_FORMAT, totalPrice));
+                messageBoxText.append(NEW_LINE).append(MSG_BOX_QUANTITY_LABEL).append(quantity);
+                messageBoxText.append(NEW_LINE).append(MSG_BOX_SIZE_LABEL).append(pizza.getSize().getName());
+                messageBoxText.append(NEW_LINE).append(MSG_BOX_DOUGH_LABEL).append(pizza.getDough().getName());
+                messageBoxText.append(NEW_LINE).append(MSG_BOX_SAUCE_LABEL).append(pizza.getSauce().getName());
+                messageBoxText.append(NEW_LINE).append(MSG_BOX_TOPPINGS_LABEL);
 
                 if (pizza.getToppings().isEmpty()) {
                     messageBoxText.append(MSG_BOX_NO_TOPPINGS_LABEL);
                 } else {
-                    messageBoxText.append(Joiner.on(", ").join(TOPPING_UTIL.getNames(pizza.getToppings())));
+                    messageBoxText.append(Joiner.on(SEPARATOR).join(TOPPING_UTIL.getNames(pizza.getToppings())));
                 }
 
                 final Message msg = MessageBoxUtil.getMessageBox(TOTAL_PRICE_MSG_BOX_TITLE, messageBoxText.toString());

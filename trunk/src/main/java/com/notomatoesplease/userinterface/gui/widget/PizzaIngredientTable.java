@@ -22,15 +22,14 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
 import com.google.common.base.Preconditions;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.notomatoesplease.domain.Ingredient;
+import com.notomatoesplease.util.PizzaUtil;
 
 /**
  * @author david.schmidt
- *
+ * 
  */
 public class PizzaIngredientTable<T extends Ingredient> {
     private final JScrollPane scrollPane;
@@ -42,18 +41,13 @@ public class PizzaIngredientTable<T extends Ingredient> {
     private final CheckBoxRenderer checkBoxRenderer = new CheckBoxRenderer();
     private final DefaultCellEditor checkBoxEditor;
 
-    @SuppressWarnings("serial")
     private final DefaultTableModel dm = new DefaultTableModel() {
+
+        private static final long serialVersionUID = -8320453717340367644L;
+
         @Override
         public boolean isCellEditable(final int row, final int column) {
             return column == 2;
-        }
-    };
-
-    private final Predicate<T> predicate = new Predicate<T>() {
-        @Override
-        public boolean apply(final T item) {
-            return item.isVisible();
         }
     };
 
@@ -71,11 +65,11 @@ public class PizzaIngredientTable<T extends Ingredient> {
      * @param showInvisible
      */
     public PizzaIngredientTable(final Vector<String> columnNames, final List<T> ingredients) {
-        Vector<Object> tableData = new Vector<Object>();
+        final Vector<Object> tableData = new Vector<Object>();
         this.ingredients = Lists.newArrayList(ingredients);
 
-        for (T ingredient : this.ingredients) {
-            Vector<Object> dataRow = new Vector<Object>();
+        for (final T ingredient : this.ingredients) {
+            final Vector<Object> dataRow = new Vector<Object>();
             dataRow.add(ingredient.getName());
             dataRow.add(String.format("%.2f€", ingredient.getPrice() / 100.0));
             dataRow.add(Boolean.valueOf(ingredient.isVisible()));
@@ -85,12 +79,11 @@ public class PizzaIngredientTable<T extends Ingredient> {
 
         dm.setDataVector(tableData, columnNames);
 
-        JCheckBox checkBox = new JCheckBox();
+        final JCheckBox checkBox = new JCheckBox();
         checkBox.setHorizontalAlignment(JLabel.CENTER);
         checkBoxEditor = new DefaultCellEditor(checkBox);
         table = new JTable(dm);
         rowEditor = new EachRowEditor(table);
-
 
         for (int i = 0; i < this.ingredients.size(); i++) {
             rowRenderer.add(i, checkBoxRenderer);
@@ -118,8 +111,8 @@ public class PizzaIngredientTable<T extends Ingredient> {
     public void addIngredient(final T ingredient) {
         Preconditions.checkNotNull(ingredient, "missing ingredient");
 
-        if (! usedNames.contains(ingredient.getName())) {
-            Vector<Object> dataRow = new Vector<Object>();
+        if (!usedNames.contains(ingredient.getName())) {
+            final Vector<Object> dataRow = new Vector<Object>();
             dataRow.add(ingredient.getName());
             dataRow.add(String.format("%.2f€", ingredient.getPrice() / 100.0));
             dataRow.add(Boolean.TRUE);
@@ -145,7 +138,7 @@ public class PizzaIngredientTable<T extends Ingredient> {
      */
     public List<T> getCheckedIngredients() {
         updateVisibilityFlag();
-        return Lists.newArrayList(Iterables.filter(ingredients, predicate));
+        return new PizzaUtil<T>().getVisibleOnly(ingredients);
     }
 
     /**
@@ -169,7 +162,7 @@ public class PizzaIngredientTable<T extends Ingredient> {
     private void updateVisibilityFlag() {
         int i = 0;
 
-        for (T ingredient : ingredients) {
+        for (final T ingredient : ingredients) {
             ingredient.setVisible(((Boolean) table.getValueAt(i, 2)).booleanValue());
             i++;
         }
@@ -177,7 +170,7 @@ public class PizzaIngredientTable<T extends Ingredient> {
 
     /**
      * @author david.schmidt
-     *
+     * 
      */
     private class EachRowEditor implements TableCellEditor {
         protected Hashtable<Integer, TableCellEditor> editors;
@@ -186,7 +179,7 @@ public class PizzaIngredientTable<T extends Ingredient> {
 
         /**
          * Constructs a EachRowEditor. create default editor
-         *
+         * 
          * @see TableCellEditor
          * @see DefaultCellEditor
          */
@@ -207,10 +200,9 @@ public class PizzaIngredientTable<T extends Ingredient> {
         }
 
         @Override
-        public Component getTableCellEditorComponent(final JTable table,
-                final Object value, final boolean isSelected, final int row, final int column) {
-            return editor.getTableCellEditorComponent(table, value, isSelected,
-                    row, column);
+        public Component getTableCellEditorComponent(final JTable table, final Object value, final boolean isSelected,
+                        final int row, final int column) {
+            return editor.getTableCellEditorComponent(table, value, isSelected, row, column);
         }
 
         @Override
@@ -254,8 +246,7 @@ public class PizzaIngredientTable<T extends Ingredient> {
             int row;
             if (e == null) {
                 row = table.getSelectionModel().getAnchorSelectionIndex();
-            }
-            else {
+            } else {
                 row = table.rowAtPoint(e.getPoint());
             }
             editor = editors.get(new Integer(row));
@@ -267,7 +258,7 @@ public class PizzaIngredientTable<T extends Ingredient> {
 
     /**
      * @author david.schmidt
-     *
+     * 
      */
     private class EachRowRenderer implements TableCellRenderer {
         private final Hashtable<Integer, TableCellRenderer> renderers;
@@ -284,38 +275,35 @@ public class PizzaIngredientTable<T extends Ingredient> {
         }
 
         @Override
-        public Component getTableCellRendererComponent(final JTable table,
-                final Object value, final boolean isSelected, final boolean hasFocus, final int row,
-                final int column) {
+        public Component getTableCellRendererComponent(final JTable table, final Object value,
+                        final boolean isSelected, final boolean hasFocus, final int row, final int column) {
             renderer = renderers.get(new Integer(row));
             if (renderer == null) {
                 renderer = defaultRenderer;
             }
-            return renderer.getTableCellRendererComponent(table, value,
-                    isSelected, hasFocus, row, column);
+            return renderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         }
     }
 
     /**
      * @author david.schmidt
-     *
+     * 
      */
-    @SuppressWarnings("serial")
-    private class CheckBoxRenderer extends JCheckBox implements
-            TableCellRenderer {
+    private class CheckBoxRenderer extends JCheckBox implements TableCellRenderer {
+
+        private static final long serialVersionUID = 2174374865482440172L;
+
         private CheckBoxRenderer() {
             setHorizontalAlignment(JLabel.CENTER);
         }
 
         @Override
-        public Component getTableCellRendererComponent(final JTable table,
-                final Object value, final boolean isSelected, final boolean hasFocus, final int row,
-                final int column) {
+        public Component getTableCellRendererComponent(final JTable table, final Object value,
+                        final boolean isSelected, final boolean hasFocus, final int row, final int column) {
             if (isSelected) {
                 setForeground(table.getSelectionForeground());
                 setBackground(table.getSelectionBackground());
-            }
-            else {
+            } else {
                 setForeground(table.getForeground());
                 setBackground(table.getBackground());
             }

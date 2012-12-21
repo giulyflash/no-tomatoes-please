@@ -27,7 +27,7 @@ public class PizzaUtil<T extends Ingredient> {
     };
 
     private final Ordering<T> NAME_ORDERING = Ordering.natural().onResultOf(GET_NAME_FUNCTION);
-    private final Predicate<T> predicate = new Predicate<T>() {
+    private final Predicate<T> IS_VISIBLE = new Predicate<T>() {
 
         @Override
         public boolean apply(final T item) {
@@ -57,6 +57,6 @@ public class PizzaUtil<T extends Ingredient> {
     }
 
     public List<T> getVisibleOnly(final List<T> items) {
-        return Lists.newArrayList(Iterables.filter(items, predicate));
+        return Lists.newArrayList(Iterables.filter(items, IS_VISIBLE));
     }
 }
