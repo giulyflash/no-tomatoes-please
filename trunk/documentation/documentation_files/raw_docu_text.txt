@@ -1,0 +1,93 @@
+1. Projektaufgabe
+1.1. Die Drei-Schichten-Architektur
+Die dreischichtige Architektur (engl. three- tier architecture) ist eine Architektur in der Softwareentwicklung, bei dem Benutzerschnittstelle (engl. user interface), Logik und Datenhaltung (engl. persistence) getrennt entwickelt und gewartet werden und sich in separaten Modulen und sich unter Umständen sogar auf verschiedenen Systemen befinden.
+Neben den gewöhnlichen Vorteilen modularer Software, wie austauschbarer Teile, besserer Arbeitsverteilung und Wiederverwendbarkeit, kann man hier ganze Schichten einfach austauschen und unabhängig von den anderen Schichten an neue oder geänderte Technologien anpassen.
+Bei einer Verteilung der Schichten auf verschiedene Systeme muss man so zum Beispiel nur die Benutzeroberfläche anpassen oder ersetzen, wenn sich das Betriebssystem der zur Darstellung genutzten Computer ändert.
+Die Modularität wird gewährleistet, indem die Kommunikation zwischen den Schichten durch klar definierte Schnittstellen gesteuert und begrenzt wird.
+
+Die drei Schichten Architektur besteht aus den folgenden Schichten:
+Darstellungsschicht (engl. presentation tier):
+Dies ist die oberste Schicht der Architektur. Die Darstellungsschicht dient nur dazu, die Informationen anzuzeigen. Sie kommuniziert mit der Fachkonzeptschicht um Eingaben zu verarbeiten oder neue Daten zur Darstellung zu erhalten.
+
+Fachkonzeptschicht (engl. application tier):
+Die Fachkonzeptschicht kontrolliert nicht nur die Logik, also die Funktionalität des Programms, sie dient auch als Schnittstelle zwischen der Darstellungsschicht und der Persistenzschicht. Alle Daten, die geladen oder gesichert werden, müssen durch diese Schicht.
+
+Persistenzschicht (engl. data tier):
+Diese Schicht ist die unterste Schicht der Architektur und kümmert sich nur um die Verwaltung, Speicherung und das Auslesen der Daten. Sie ist neutral und unabhängig von Logik und Darstellung und ihre einzige Funktion ist die Rückgabe von Daten an die verarbeitende und damit auch darstellende Schicht.
+
+1.2. Design-Pattern
+Als Entwurfsmuster kommt das sogenannte „Fluent Interface“ zum Einsatz. Dieser Begriff wurde von Martin Fowler sowie Eric Evans geprägt. Fluent Interfaces können einem natürlich-sprachlichen Satz ähneln. Das führt dazu, dass zusätzliche Kommentare im Programmcode überflüssig werden. Die Programmierschnittstelle ist primär dafür entworfen, das der Sourcecode lesbar und fließend ist. Der Entwurf für eine schöne, fließende Schnittstelle benötigt allerdings ein gewisses Maß an Planung und Vorbereitung. Darauf wird im Abschnitt „Realisierung des Fluent-Designs“ näher eingegangen.
+
+einfaches 3 teile Beispiel
+Stringbuilder append append tostring zb
+
+
+1.3. Das Pizza-Bäcker-Problem
+Unser Kunde ist ein kleiner, aufstrebender Pizzabäcker, der neben seinem kleinen Ristorante Pizzen auf Wunsch auch ausliefert.
+Das von unserem Kunden beschriebene Problem gestaltet sich so, dass er bei jeder Bestellung den Preis der Pizza umständlich aus den gewünschten Zutaten selbst berechnen oder in die Kasse eingeben muss um den Endpreis nennen zu können. Dies ist vor allem an geschäftsreichen Abenden, etwa dem Wochenende, und bei Telefonbestellungen sehr unpraktisch.
+Der Kunde möchte zur Optimierung der Abläufe ein Programm, in dem er die Pizzen während der Bestellung leicht bedienbar mit einer Hand zusammenstellen kann, um dem Kunden den Preis sofort nennen zu können.
+Des weiteren soll das Programm sowohl auf dem modernen Bürorechner als auch dem kleinen, leistungsschwachen Kassencomputer lauffähig sein. Dafür sind zwei verschiedene, angepasste Benutzeroberflächen erforderlich.
+Eine dritte, wichtige Anforderung ist die Möglichkeit, neue, saisonale Zutaten auch nachträglich hinzufügen und permanent speichern zu können, damit er dem Kunden immer wieder frische, moderne Ideen anbieten kann. Dazu gehört auch eine mögliche skalierbare Datenhaltung, sollten noch viele Zutaten und Variationen hinzukommen.
+2. Produkt
+2.1. Realisierung der drei Schichten
+Das finale Produkt wurde vollständig in Java realisiert und wurde wie folgt logisch, modular in die Schichten unterteilt:
+Die beiden Module für die grafische Benutzerschnittstelle sowie die Terminalbenutzerschnittstelle sind Module der Darstellungsschicht. Beide sind beliebig gegenseitig austauschbar. Sie enthalten keine Logik oder direkten Zugriff auf die Datenhaltung. Für alle Aktionen, abseits der reinen Darstellung, werden die in dem Logik-Interface definierten Methoden zur Kommunikation mit der Fachkonzeptschicht benutzt. Um ausführbar zu sein, muss eine Benutzerschnittstelle selbst die abstrakte Klasse AbstractUserInterface implementieren.
+Die Fachkonzeptschicht wurde durch eine Logik gelöst, welche auf das Entwurfsmuster Fluent Interface beruht. Das Modul wurde ebenfalls so entwickelt, dass man es jederzeit und problemlos durch eine andere Logik ersetzen kann. Dieses Modul erthält weder direkten Zugriff auf die Datenhaltung, noch besitzt es eine Möglichkeit Daten zu visualisieren. Ein Fachkonzeptmodul muss die abstrakte Klasse AbstractLogic implementieren und kann zur Kommunikation mit der Datenhaltung alle in dem Persistence-Interface definierten Methoden aufrufen.
+Das JsonFilePersistence-Modul und das H2Persistence-Modul sind die beiden realisierten Module der Persistenzschicht. Beide Module implementieren das Persistence-Interface. Jedes weitere Datenhaltungsmodul müsste das Interface ebenfalls implementieren.
+
+{Klassendiagramm}
+
+
+2.2. Benutzeroberflächen
+2.2.1. Grafisches User Interface (GUI)
+Das grafische User Interface wurde mit Swing realisiert. Swing ist ein Framework für grafische Benutzeroberflächen und ist in der Java Standard Edition bereits enthalten.
+Das Design der grafischen Oberfläche hält sich, wie geplant, stark an die Vorlage des Pflichtenheftes.
+Die Oberfläche ist in zwei Tabs unterteilt. Der erste Tab enthält alle Elemente die, zur Bearbeitung der verfügbaren Zutaten nötig sind. Für jede der drei möglichen Bestandteile gibt es also eine Übersichtstabelle und Felder um sie hinzuzufügen.
+Der zweite Tab stellt alle Funktionen bereit, die zur Erstellung von Pizzen nötig sind. Man wählt einen Teig und eine Sauce und fügt dann die verschiedenen Beläge hinzu.
+Ist die gewünschte Pizza zusammengestellt, schließt man diese ab, bekommt den Preis und die benutzten Zutaten angezeigt.
+
+{Screenshots}
+2.2.2. Text User Interface (TUI)
+Für die Umsetzung der Darstellungsschicht im Text-Modus haben wir zu JCurses (http://sourceforge.net/projects/javacurses/) gegriffen. Dies ist eine Bibliothek, um Textmodus-basierte Anwendungen in Java zu schreiben. Dabei wird von JCurses eine Fenstertechnik für das Terminal/die Konsole angeboten, die ähnliche wie AWT aufgebaut ist, jedoch auf die „curses“-Bibliothek basiert. JCurses ist unter der GNU Lesser General Public License veröffentlicht und sowohl für Linux als auch für Windows frei verfügbar.
+
+{Screenshots}
+2.3 Datenhaltung
+2.3.1 H2-Datenbank
+Als Lösung für das Datenbankmodul haben wir uns für die H2-Datenbank entschieden. Die H2-DB ist eine eingebettete, relationale Datenbank basierend auf dem SQL-Standard. Sie ist ein Open Source Java Projekt und auf http://www.h2database.com verfügbar.
+Die vier verfügbaren Komponenten der Pizzen werden hier in vier Tabellen abgebildet.
+
+ER-Diagramm aller verwendeten Tabellen:
+{ER-Diagramm}
+2.3.2 JSON
+Bei der zweiten Datenhaltung haben wir uns für JSON (JavaScript Object Notation, http://json.org/) entschieden, da es einen sehr einfachen Aufbau hat und daher für Mensch und Computer leicht les- und schreibbar ist. Für die Serialisierung und Deserialisierung der Java-Objekte benutzen wir die Bibliothek GSON (http://code.google.com/p/google-gson/), die eine simple Schnittstelle (toJson() and fromJson() Methode) bietet. Die serialisierten Daten werden entsprechend den vier Komponenten der möglichen Pizzen in vier Dateien persistiert.
+
+{e.g. JSON*.png im documentation/documentation_files-Verzeichnis, such dir welche aus ;)}
+
+2.4 Realisierung des Entwurfmusters
+{pizza prepare photo}
+{pizza done photo}
+
+Um eine fließende, realitätsnahe Programmierschnittstelle zu erhalten, wurde erstmal der logische Ablauf beim Pizza-Backen betrachtet.
+Zuerst wird der Teig geknetet. Anschließend wird dieser ausgerollt. Danach wird eine Sauce auf dem zuvor ausgerollten Teig verteilt. Es folgt das Streuen der Zutaten auf die Pizza. Abschließend wird die Pizza in den Ofen geschoben und gebacken. Zum Schluss erhalten wir eine fertige Pizza.
+
+Diese Reihenfolge ist logisch strukturiert. Es ist zum Beispiel unsinnig, dass zuerst die Zutaten auf die Pizza gestreut werden und erst danach der Teig ausgerollt wird.
+
+Um diese Reihenfolge in der Programmiersprache umzusetzen, wurde erstmal eine einfache Grammatik entworfen.
+
+Die Grammatik G = (V, S, P, S) ist gegeben mit
+V = {S, B, C, D, E},
+S = {knead_, rollOut_, spread_, sprinkle_, bake} und
+P = {S ? knead_B, B ? rollOut_C, C ? spread_D, D ? sprinkle_E, E ? bake}
+
+und produziert die Sprache L(G) = {knead_rollOut_spread_sprinkle_bake}. Der Zustandsgraph des deterministischen endlichen Automaten (DEA) sieht so aus:
+{Bild: DEA Zustandsgraph}
+
+Im Quelltext wurden die verschiedenen Zustände mit Hilfe von Klassen realisiert. Die Start-Klasse ist PizzaBakery, die die Methode knead() bereitstellt. Mit dieser Methode gelingt der Übergang zur Klasse PizzaDoughTable. Dort gibt es die Methode rollOut(), mit der es möglich ist, zur nächsten Klasse, PizzaSauceTable, zu kommen. Diese Klasse stellt die Methode spread() zur Verfügung, die den Übergang zur Klasse PizzaToppingsTable ermöglicht. Dort befindet sich die Methode sprinkle(), die zur Klasse PizzaOven führt. PizzaOven gibt dann die fertige Pizza zurück, sobald die Methode bake() aufgerufen wurde.
+
+
+2.5 Kommunikation zwischen den Schichten
+In Abbildung 123 sind, repräsentativ für die Kommunikation zwischen den Schichten, zwei Sequenzen abgebildet.
+In dem ersten Beispiel ist abgebildet, was passiert, wenn der User den Button betätigt um einen neuen Belag in das Programm einzutragen.
+Die zweite Sequenz verdeutlicht die Abläufe beim Abschließen einer nach Kundenwunsch zusammengestellten Pizza mit anschließender Preisausgabe.
+
+{Sequenzdiagramm}

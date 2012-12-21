@@ -29,6 +29,7 @@ public final class PizzaIngredientComboBox<T extends Ingredient> extends JComboB
      * @return the currently selected pizza property
      */
     public T getSelectedIngredient() {
+        // TODO catch empty lists
         return ingredients.get(super.getSelectedIndex());
     }
 
