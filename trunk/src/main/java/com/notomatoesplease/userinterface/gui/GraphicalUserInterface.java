@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -212,6 +213,13 @@ public class GraphicalUserInterface extends AbstractUserInterface {
         totalPriceField.setText(String.format("%.2f€", calculateTotalPrice(toppingTable, sizeComboBox, doughComboBox, sauceComboBox, counterSpinner)));
 
         // create pizza pane listener
+        counterSpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(final ChangeEvent arg0) {
+                totalPriceField.setText(String.format("%.2f€", calculateTotalPrice(toppingTable, sizeComboBox, doughComboBox, sauceComboBox, counterSpinner)));
+            }
+        });
+
         addToppingButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {

@@ -29,7 +29,7 @@ import com.notomatoesplease.util.PizzaUtil;
 
 /**
  * @author david.schmidt
- * 
+ *
  */
 public class PizzaIngredientTable<T extends Ingredient> {
     private final JScrollPane scrollPane;
@@ -170,7 +170,7 @@ public class PizzaIngredientTable<T extends Ingredient> {
 
     /**
      * @author david.schmidt
-     * 
+     *
      */
     private class EachRowEditor implements TableCellEditor {
         protected Hashtable<Integer, TableCellEditor> editors;
@@ -179,7 +179,7 @@ public class PizzaIngredientTable<T extends Ingredient> {
 
         /**
          * Constructs a EachRowEditor. create default editor
-         * 
+         *
          * @see TableCellEditor
          * @see DefaultCellEditor
          */
@@ -246,7 +246,8 @@ public class PizzaIngredientTable<T extends Ingredient> {
             int row;
             if (e == null) {
                 row = table.getSelectionModel().getAnchorSelectionIndex();
-            } else {
+            }
+            else {
                 row = table.rowAtPoint(e.getPoint());
             }
             editor = editors.get(new Integer(row));
@@ -258,7 +259,7 @@ public class PizzaIngredientTable<T extends Ingredient> {
 
     /**
      * @author david.schmidt
-     * 
+     *
      */
     private class EachRowRenderer implements TableCellRenderer {
         private final Hashtable<Integer, TableCellRenderer> renderers;
@@ -287,7 +288,7 @@ public class PizzaIngredientTable<T extends Ingredient> {
 
     /**
      * @author david.schmidt
-     * 
+     *
      */
     private class CheckBoxRenderer extends JCheckBox implements TableCellRenderer {
 
@@ -303,7 +304,8 @@ public class PizzaIngredientTable<T extends Ingredient> {
             if (isSelected) {
                 setForeground(table.getSelectionForeground());
                 setBackground(table.getSelectionBackground());
-            } else {
+            }
+            else {
                 setForeground(table.getForeground());
                 setBackground(table.getBackground());
             }
