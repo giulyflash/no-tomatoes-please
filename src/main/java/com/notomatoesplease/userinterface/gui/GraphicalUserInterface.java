@@ -1,6 +1,9 @@
 package com.notomatoesplease.userinterface.gui;
 
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
@@ -31,6 +34,7 @@ import com.notomatoesplease.domain.Size;
 import com.notomatoesplease.domain.Topping;
 import com.notomatoesplease.logic.Logic;
 import com.notomatoesplease.userinterface.AbstractUserInterface;
+import com.notomatoesplease.userinterface.gui.widget.GBCGenerator;
 import com.notomatoesplease.userinterface.gui.widget.PizzaIngredientComboBox;
 import com.notomatoesplease.userinterface.gui.widget.PizzaIngredientTable;
 import com.notomatoesplease.userinterface.gui.widget.PizzaPropertyComboBox;
@@ -50,7 +54,7 @@ public class GraphicalUserInterface extends AbstractUserInterface {
     private static final String CREATE_PIZZA_BUTTON = "Pizza erstellen";
     private static final String RESULT_MESSAGE = "%d Pizza(s) backen! Preis: %.2f€";
     private static final String BILL_TITLE = "Rechnung";
-    private static final String SIZE = "Größe";
+    private static final String SIZE = "Größe:";
     private static final String DOUGH = "Teig:";
     private static final String SAUCE = "Soße:";
     private static final String TOPPING = "Belag:";
@@ -63,8 +67,8 @@ public class GraphicalUserInterface extends AbstractUserInterface {
     private static final String NEW_SAUCE = "Neuer Soße:";
     private static final String NEW_TOPPING = "Neuer Belag:";
     private static final String VISIBLE = "Ist sichtbar";
-    private static final int WINDOW_WIDTH = 960;
-    private static final int WINDOW_HEIGHT = 520;
+    private static final int WINDOW_WIDTH = 780;
+    private static final int WINDOW_HEIGHT = 400;
 
     public GraphicalUserInterface(final Logic logic) {
         super(logic);
@@ -103,23 +107,53 @@ public class GraphicalUserInterface extends AbstractUserInterface {
         names.add(SELECTED_COL);
         final PizzaIngredientTable<Topping> toppingTable = new PizzaIngredientTable<Topping>(names);
 
+        // fill and style pizza creation panel
         final JPanel panelPizza = new JPanel();
-        panelPizza.add(sizeLabel);
-        panelPizza.add(sizeComboBox);
-        panelPizza.add(doughLabel);
-        panelPizza.add(doughComboBox);
-        panelPizza.add(sauceLabel);
-        panelPizza.add(sauceComboBox);
-        panelPizza.add(toppingLabel);
-        panelPizza.add(toppingComboBox);
-        panelPizza.add(addToppingButton);
-        panelPizza.add(countLabel);
-        panelPizza.add(counterSpinner);
-        panelPizza.add(totalPriceLabel);
-        panelPizza.add(totalPriceField);
-        panelPizza.add(createPizzaButton);
-        panelPizza.add(addedToppingsLabel);
-        panelPizza.add(toppingTable.getPaneWithTable());
+        panelPizza.setLayout(new GridBagLayout());
+        GBCGenerator gbcGenerator = new GBCGenerator();
+        GridBagConstraints gbc = gbcGenerator.setFill(GridBagConstraints.HORIZONTAL)
+                .setInsets(new Insets(5, 5, 5, 5))
+                .getConstraints();
+
+        gbc = gbcGenerator.setPosition(0, 0).setGridSpan(1, 1).setAnchor(GridBagConstraints.LINE_END).getConstraints();
+        panelPizza.add(sizeLabel, gbc);
+        gbc = gbcGenerator.setPosition(1, 0).setGridSpan(3, 1).setAnchor(GridBagConstraints.LINE_START).getConstraints();
+        panelPizza.add(sizeComboBox, gbc);
+
+        gbc = gbcGenerator.setPosition(0, 1).setGridSpan(1, 1).setAnchor(GridBagConstraints.LINE_END).getConstraints();
+        panelPizza.add(doughLabel, gbc);
+        gbc = gbcGenerator.setPosition(1, 1).setGridSpan(1, 1).setAnchor(GridBagConstraints.LINE_START).setInsets(new Insets(5, 5, 5, 20)).getConstraints();
+        panelPizza.add(doughComboBox, gbc);
+
+        gbc = gbcGenerator.setPosition(0, 2).setGridSpan(1, 1).setAnchor(GridBagConstraints.LINE_END).setInsets(new Insets(5, 5, 5, 5)).getConstraints();
+        panelPizza.add(sauceLabel, gbc);
+        gbc = gbcGenerator.setPosition(1, 2).setGridSpan(3, 1).setAnchor(GridBagConstraints.LINE_START).setInsets(new Insets(5, 5, 5, 20)).getConstraints();
+        panelPizza.add(sauceComboBox, gbc);
+
+        gbc = gbcGenerator.setPosition(0, 3).setGridSpan(1, 1).setAnchor(GridBagConstraints.LINE_END).setInsets(new Insets(5, 5, 5, 5)).getConstraints();
+        panelPizza.add(toppingLabel, gbc);
+        gbc = gbcGenerator.setPosition(1, 3).setGridSpan(1, 1).setAnchor(GridBagConstraints.LINE_START).getConstraints();
+        panelPizza.add(toppingComboBox, gbc);
+        gbc = gbcGenerator.setPosition(2, 3).setGridSpan(3, 1).getConstraints();
+        panelPizza.add(addToppingButton, gbc);
+
+        gbc = gbcGenerator.setPosition(0, 4).setGridSpan(1, 1).setAnchor(GridBagConstraints.LINE_END).getConstraints();
+        panelPizza.add(countLabel, gbc);
+        gbc = gbcGenerator.setPosition(1, 4).setGridSpan(1, 1).setAnchor(GridBagConstraints.LINE_START).setInsets(new Insets(5, 5, 5, 50)).getConstraints();
+        panelPizza.add(counterSpinner, gbc);
+
+        gbc = gbcGenerator.setPosition(1, 7).setGridSpan(1, 1).setAnchor(GridBagConstraints.LINE_END).setInsets(new Insets(5, 5, 5, 5)).getConstraints();
+        panelPizza.add(totalPriceLabel, gbc);
+        gbc = gbcGenerator.setPosition(2, 7).setGridSpan(1, 1).setAnchor(GridBagConstraints.LINE_START).getConstraints();
+        panelPizza.add(totalPriceField, gbc);
+
+        gbc = gbcGenerator.setPosition(1, 8).setGridSpan(2, 1).getConstraints();
+        panelPizza.add(createPizzaButton, gbc);
+
+        gbc = gbcGenerator.setPosition(5, 0).setGridSpan(1, 1).getConstraints();
+        panelPizza.add(addedToppingsLabel, gbc);
+        gbc = gbcGenerator.setPosition(5, 1).setGridSpan(1, 5).getConstraints();
+        panelPizza.add(toppingTable.getPaneWithTable(), gbc);
         // Pizza creation tab end
 
         // Pizza ingredient editing tab
@@ -133,19 +167,19 @@ public class GraphicalUserInterface extends AbstractUserInterface {
         final JLabel priceSauceLabel = new JLabel(PRICE_IN_E);
         final JLabel addedSauceLabel = new JLabel(ADDED_SAUCES);
         final JTextField toppingNameField = new JTextField();
-        toppingNameField.setPreferredSize(new Dimension(50, 20));
+        toppingNameField.setPreferredSize(new Dimension(70, 20));
         final JTextField doughNameField = new JTextField();
-        doughNameField.setPreferredSize(new Dimension(50, 20));
+        doughNameField.setPreferredSize(new Dimension(70, 20));
         final JTextField sauceNameField = new JTextField();
-        sauceNameField.setPreferredSize(new Dimension(50, 20));
+        sauceNameField.setPreferredSize(new Dimension(70, 20));
 
         final DecimalFormat priceFormat = new DecimalFormat("0.##");
         final JFormattedTextField toppingPriceField = new JFormattedTextField(priceFormat);
-        toppingPriceField.setPreferredSize(new Dimension(50, 20));
+        toppingPriceField.setPreferredSize(new Dimension(70, 20));
         final JFormattedTextField doughPriceField = new JFormattedTextField(priceFormat);
-        doughPriceField.setPreferredSize(new Dimension(50, 20));
+        doughPriceField.setPreferredSize(new Dimension(70, 20));
         final JFormattedTextField saucePriceField = new JFormattedTextField(priceFormat);
-        saucePriceField.setPreferredSize(new Dimension(50, 20));
+        saucePriceField.setPreferredSize(new Dimension(70, 20));
 
         final JButton addNewToppingButton = new JButton(ADD_TOPPING_BUTTON);
         final JButton addNewDoughButton = new JButton(ADD_DOUGH_BUTTON);
@@ -168,34 +202,63 @@ public class GraphicalUserInterface extends AbstractUserInterface {
         editSauceNames.add(VISIBLE);
         final PizzaIngredientTable<Sauce> editSauceTable = new PizzaIngredientTable<Sauce>(editSauceNames, sauceList);
 
+        // fill and style ingredients panel
         final JPanel panelIngredients = new JPanel();
+        panelIngredients.setLayout(new GridBagLayout());
+        gbcGenerator = new GBCGenerator();
+        gbc = gbcGenerator.setFill(GridBagConstraints.HORIZONTAL)
+                .setInsets(new Insets(5, 5, 5, 5))
+                .setAnchor(GridBagConstraints.LINE_START)
+                .getConstraints();
 
-        panelIngredients.add(newToppingLabel);
-        panelIngredients.add(toppingNameField);
-        panelIngredients.add(priceToppingLabel);
-        panelIngredients.add(toppingPriceField);
-        panelIngredients.add(addNewToppingButton);
-        panelIngredients.add(addedToppingLabel);
+        gbc = gbcGenerator.setPosition(0, 0).setGridSpan(1, 1).getConstraints();
+        panelIngredients.add(newToppingLabel, gbc);
+        gbc = gbcGenerator.setPosition(1, 0).setGridSpan(1, 1).getConstraints();
+        panelIngredients.add(toppingNameField, gbc);
+        gbc = gbcGenerator.setPosition(0, 1).setGridSpan(1, 1).getConstraints();
+        panelIngredients.add(priceToppingLabel, gbc);
+        gbc = gbcGenerator.setPosition(1, 1).setGridSpan(1, 1).getConstraints();
+        panelIngredients.add(toppingPriceField, gbc);
+        gbc = gbcGenerator.setPosition(0, 2).setGridSpan(2, 1).setInsets(new Insets(5, 5, 5, 40)).getConstraints();
+        panelIngredients.add(addNewToppingButton, gbc);
+        gbc = gbcGenerator.setPosition(0, 3).setGridSpan(2, 1).getConstraints();
+        panelIngredients.add(addedToppingLabel, gbc);
 
-        panelIngredients.add(newDoughLabel);
-        panelIngredients.add(doughNameField);
-        panelIngredients.add(priceDoughLabel);
-        panelIngredients.add(doughPriceField);
-        panelIngredients.add(addNewDoughButton);
-        panelIngredients.add(addedDoughLabel);
+        gbc = gbcGenerator.setPosition(4, 0).setGridSpan(1, 1).setInsets(new Insets(5, 5, 5, 5)).getConstraints();
+        panelIngredients.add(newDoughLabel, gbc);
+        gbc = gbcGenerator.setPosition(5, 0).setGridSpan(1, 1).getConstraints();
+        panelIngredients.add(doughNameField, gbc);
+        gbc = gbcGenerator.setPosition(4, 1).setGridSpan(1, 1).getConstraints();
+        panelIngredients.add(priceDoughLabel, gbc);
+        gbc = gbcGenerator.setPosition(5, 1).setGridSpan(1, 1).getConstraints();
+        panelIngredients.add(doughPriceField, gbc);
+        gbc = gbcGenerator.setPosition(4, 2).setGridSpan(2, 1).setInsets(new Insets(5, 5, 5, 40)).getConstraints();
+        panelIngredients.add(addNewDoughButton, gbc);
+        gbc = gbcGenerator.setPosition(4, 3).setGridSpan(2, 1).getConstraints();
+        panelIngredients.add(addedDoughLabel, gbc);
 
-        panelIngredients.add(newSauceLabel);
-        panelIngredients.add(sauceNameField);
-        panelIngredients.add(priceSauceLabel);
-        panelIngredients.add(saucePriceField);
-        panelIngredients.add(addNewSauceButton);
-        panelIngredients.add(addedSauceLabel);
+        gbc = gbcGenerator.setPosition(7, 0).setGridSpan(1, 1).setInsets(new Insets(5, 5, 5, 5)).getConstraints();
+        panelIngredients.add(newSauceLabel, gbc);
+        gbc = gbcGenerator.setPosition(8, 0).setGridSpan(1, 1).getConstraints();
+        panelIngredients.add(sauceNameField, gbc);
+        gbc = gbcGenerator.setPosition(7, 1).setGridSpan(1, 1).getConstraints();
+        panelIngredients.add(priceSauceLabel, gbc);
+        gbc = gbcGenerator.setPosition(8, 1).setGridSpan(1, 1).getConstraints();
+        panelIngredients.add(saucePriceField, gbc);
+        gbc = gbcGenerator.setPosition(7, 2).setGridSpan(2, 1).setInsets(new Insets(5, 5, 5, 40)).getConstraints();
+        panelIngredients.add(addNewSauceButton, gbc);
+        gbc = gbcGenerator.setPosition(7, 3).setGridSpan(2, 1).getConstraints();
+        panelIngredients.add(addedSauceLabel, gbc);
 
-        panelIngredients.add(editToppingTable.getPaneWithTable());
-        panelIngredients.add(editDoughTable.getPaneWithTable());
-        panelIngredients.add(editSauceTable.getPaneWithTable());
+        gbc = gbcGenerator.setPosition(0, 4).setGridSpan(3, 1).setInsets(new Insets(5, 5, 5, 5)).getConstraints();
+        panelIngredients.add(editToppingTable.getPaneWithTable(), gbc);
+        gbc = gbcGenerator.setPosition(4, 4).setGridSpan(3, 1).getConstraints();
+        panelIngredients.add(editDoughTable.getPaneWithTable(), gbc);
+        gbc = gbcGenerator.setPosition(7, 4).setGridSpan(3, 1).getConstraints();
+        panelIngredients.add(editSauceTable.getPaneWithTable(), gbc);
         // Pizza ingredient editing tab end
 
+        // put everything together
         final JTabbedPane tabs = new JTabbedPane(JTabbedPane.TOP);
         tabs.add(EDIT_INGRIDIENTS_TAB, panelIngredients);
         tabs.add(CREATE_PIZZA_TAB, panelPizza);
@@ -209,7 +272,7 @@ public class GraphicalUserInterface extends AbstractUserInterface {
 
         mainFrame.add(tabs);
 
-        //init total price
+        //calculate initial total price
         totalPriceField.setText(String.format("%.2f€", calculateTotalPrice(toppingTable, sizeComboBox, doughComboBox, sauceComboBox, counterSpinner)));
 
         // create pizza pane listener
