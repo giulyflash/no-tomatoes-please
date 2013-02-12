@@ -73,7 +73,7 @@ public class ApplicationWindow extends Window {
             } else if (inp.getCode() == InputChar.KEY_F2) {
                 applicationLayoutManager.removeWidget(mainPanel);
                 mainPanel = ManageIngredientsPanel.getManageIngredientsPanel(logic);
-                ;
+
                 applicationLayoutManager.addWidget(mainPanel, 0, 1, 1, 1, ALIGNMENT_CENTER, ALIGNMENT_CENTER);
                 pack();
                 repaint();
