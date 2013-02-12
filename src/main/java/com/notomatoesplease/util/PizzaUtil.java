@@ -21,8 +21,8 @@ public class PizzaUtil<T extends Ingredient> {
 
     private final Function<T, String> GET_NAME_FUNCTION = new Function<T, String>() {
         @Override
-        public String apply(final T from) {
-            return from.getName();
+        public String apply(final T item) {
+            return item.getName();
         }
     };
 

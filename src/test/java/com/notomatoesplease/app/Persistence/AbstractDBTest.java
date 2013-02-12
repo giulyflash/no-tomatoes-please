@@ -12,7 +12,7 @@ public abstract class AbstractDBTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractDBTest.class);
 
-    protected static final String DATABASE_URL = "jdbc:h2:file:target/test-database/pizza";
+    static final String DATABASE_URL = "jdbc:h2:file:target/test-database/pizza";
 
     protected Connection getConnection() {
         try {

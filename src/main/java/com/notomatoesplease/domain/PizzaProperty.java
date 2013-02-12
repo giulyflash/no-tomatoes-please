@@ -6,7 +6,7 @@ public abstract class PizzaProperty {
 
     public PizzaProperty() {
 
-    };
+    }
 
     public PizzaProperty(final String name, final int price) {
         this.name = name;

@@ -52,8 +52,7 @@ public final class CommandLineUtil {
         OptionBuilder.isRequired();
         OptionBuilder.withDescription(MessageFormat
                         .format("mode of the user interface. {0}", POSSIBLE_INTERFACE_VALUES));
-        final Option userInterface = OptionBuilder.create(SHORT_INTERFACE);
-        return userInterface;
+        return OptionBuilder.create(SHORT_INTERFACE);
     }
 
     public static Option createOptionLogic() {
@@ -62,8 +61,7 @@ public final class CommandLineUtil {
         OptionBuilder.withLongOpt("logic");
         OptionBuilder.withDescription(MessageFormat.format("mode of the logic. Default value is {0}. {1}",
                         FLUENT_LOGIC, POSSIBLE_LOGIC_VALUES));
-        final Option userInterface = OptionBuilder.create(SHORT_LOGIC);
-        return userInterface;
+        return OptionBuilder.create(SHORT_LOGIC);
     }
 
     public static Option createOptionPersistence() {
@@ -72,8 +70,7 @@ public final class CommandLineUtil {
         OptionBuilder.withLongOpt("persistence");
         OptionBuilder.isRequired();
         OptionBuilder.withDescription(MessageFormat.format("mode of the persistence. {0}", POSSIBLE_PERSISTENCE_VALUES));
-        final Option persistence = OptionBuilder.create(SHORT_PERSISTENCE);
-        return persistence;
+        return OptionBuilder.create(SHORT_PERSISTENCE);
     }
 
     public static Map<Character, String> getCommandLineValues(final CommandLine line) {
@@ -97,7 +94,7 @@ public final class CommandLineUtil {
     }
 
     public static UserInterface getUserInterface(final String value, final Logic logic) throws IllegalArgumentException {
-        UserInterface userInterface = null;
+        UserInterface userInterface;
         final String optionValue = value.toUpperCase();
         if (GRAPHICAL_MODE.equals(optionValue)) {
             userInterface = new GraphicalUserInterface(logic);
@@ -113,7 +110,7 @@ public final class CommandLineUtil {
     }
 
     public static Logic getLogic(final String value, final Persistence persistence) {
-        Logic logic = null;
+        Logic logic;
         final String optionValue = value.toUpperCase();
         if (FLUENT_LOGIC.equals(optionValue)) {
             logic = new FluentLogicImpl(persistence);
@@ -126,7 +123,7 @@ public final class CommandLineUtil {
     }
 
     public static Persistence getPersistence(final String value) {
-        Persistence persistenceLayer = null;
+        Persistence persistenceLayer;
         final String optionValue = value.toUpperCase();
         if (DB_PERSISTENCE.equals(optionValue)) {
             persistenceLayer = new H2PersistenceImpl();
